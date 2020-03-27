@@ -1,0 +1,165 @@
+$border-radius: 8px;
+$main-color: #136a8a;
+$accent-color: #2F73A3;
+
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  display: block;
+}
+
+h1, h2, h3, h4, h5 {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background: $main-color;
+  height: auto;
+  font-family: 'Open Sans', sans-serif
+}
+
+.project-title {
+  display: block;
+  color: #fff;
+  margin: 0;
+  padding: 5px 0 15px 0;
+}
+
+.wrapper {
+  height: auto;
+  width: 960px;
+  max-width: 100%;
+  padding: 0 20px;
+  margin: 0 auto;
+}
+
+.content {
+  padding: 30px;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  color: #000;
+  //border-radius: $border-radius;
+}
+
+.title {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #000;
+  margin-bottom: 15px;
+}
+
+.members {
+  &__container {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.members-item {
+  //border: 1px solid #bebebe;
+  border-radius: 5px;
+  padding: 10px;
+  &__name {
+    font-size: 20px;
+  }
+
+  &__vk-link {
+    color: $accent-color;
+    padding: 5px 0;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__job {
+    display:inline-block;
+    padding: 5px;
+  }
+}
+
+.links {
+  &__item {
+    border-radius: 3px;
+    padding: 10px;
+    display: block;
+    background-color: $accent-color;
+    color: #fff;
+    transition: transform 0.3s;
+    &:hover {
+      transform: scale(1.04);
+    }
+  }
+  &__container {
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.meetings {
+  &__title {
+    margin-top: 20px;
+  }
+}
+
+.meetings-item {
+  &__date {
+    text-align: center;
+    border: 1px solid $accent-color;
+    padding: 10px;
+    border-radius: 4px;
+    color: $accent-color;
+    margin: 10px 0;
+  }
+}
+
+
+
+
+
+
+
+@media (max-width: 575.98px) {
+  .project-title {
+    font-size: 25px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .content {
+    padding: 15px 10px;
+  }
+
+  .wrapper {
+    padding: 0;
+  }
+
+  .members {
+    &__container {
+      grid-template-columns: 1fr;
+      grid-gap: 0;
+    }
+    &__item {
+      //padding: 10px 0;
+    }
+  }
+
+  .links {
+    &__item {
+      width: 45%;
+      margin: 5px;
+    }
+
+    &__container {
+      flex-wrap: wrap;
+    }
+  }
+}

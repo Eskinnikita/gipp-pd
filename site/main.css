@@ -1,0 +1,121 @@
+* {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+
+a {
+  text-decoration: none;
+  display: block; }
+
+h1, h2, h3, h4, h5 {
+  display: block;
+  padding: 0;
+  margin: 0; }
+
+body {
+  background: #136a8a;
+  height: auto;
+  font-family: 'Open Sans', sans-serif; }
+
+.project-title {
+  display: block;
+  color: #fff;
+  margin: 0;
+  padding: 5px 0 15px 0; }
+
+.wrapper {
+  height: auto;
+  width: 960px;
+  max-width: 100%;
+  padding: 0 20px;
+  margin: 0 auto; }
+
+.content {
+  padding: 30px;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  color: #000; }
+
+.title {
+  padding-bottom: 5px;
+  border-bottom: 1px solid #000;
+  margin-bottom: 15px; }
+
+.members__container {
+  display: -ms-grid;
+  display: grid;
+  grid-gap: 10px;
+  -ms-grid-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  -ms-grid-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr; }
+
+.members-item {
+  border-radius: 5px;
+  padding: 10px; }
+  .members-item__name {
+    font-size: 20px; }
+  .members-item__vk-link {
+    color: #2F73A3;
+    padding: 5px 0; }
+    .members-item__vk-link:hover {
+      text-decoration: underline; }
+  .members-item__job {
+    display: inline-block;
+    padding: 5px; }
+
+.links__item {
+  border-radius: 3px;
+  padding: 10px;
+  display: block;
+  background-color: #2F73A3;
+  color: #fff;
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: -webkit-transform 0.3s;
+  -o-transition: transform 0.3s;
+  transition: transform 0.3s;
+  transition: transform 0.3s, -webkit-transform 0.3s; }
+  .links__item:hover {
+    -webkit-transform: scale(1.04);
+    -ms-transform: scale(1.04);
+    transform: scale(1.04); }
+
+.links__container {
+  padding: 10px 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between; }
+
+.meetings__title {
+  margin-top: 20px; }
+
+.meetings-item__date {
+  text-align: center;
+  border: 1px solid #2F73A3;
+  padding: 10px;
+  border-radius: 4px;
+  color: #2F73A3;
+  margin: 10px 0; }
+
+@media (max-width: 575.98px) {
+  .project-title {
+    font-size: 25px;
+    padding-left: 10px;
+    padding-right: 10px; }
+  .content {
+    padding: 15px 10px; }
+  .wrapper {
+    padding: 0; }
+  .members__container {
+    -ms-grid-columns: 1fr;
+    grid-template-columns: 1fr;
+    grid-gap: 0; }
+  .links__item {
+    width: 45%;
+    margin: 5px; }
+  .links__container {
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap; } }
