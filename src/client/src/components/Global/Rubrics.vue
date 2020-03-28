@@ -49,7 +49,7 @@
             selectRubric(id, uri) {
                 this.selectedRubric = uri
                 if (id !== 0) {
-                    this.$store.commit('GET_RUBRIC_NEWS', id)
+                    this.$store.commit('GET_RUBRIC_NEWS', uri)
                     this.$router.push(`/rubric/${uri}`, () => {
                     })
                 } else {

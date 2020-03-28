@@ -2,9 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import NewsFeed from "../views/NewsFeed"
 import Admin from "../views/Admin/Admin"
-import ArticleEditor from "../views/Admin/ArticleEditor"
+import ArticleEditor from "../views/Admin/Articles/ArticleEditor"
 import Login from "../views/Admin/Login"
 import ArticleView from "../views/ArticleView"
+import NotFound from "../views/NotFound"
+import PageEdit from "../views/Admin/PageEdit"
 
 Vue.use(VueRouter)
 
@@ -39,6 +41,19 @@ const routes = [
         path: '/news/:id',
         name: 'ArticleView',
         component: ArticleView
+    },
+    {
+        path: '/edit-page',
+        name: 'PageEdit',
+        component: PageEdit
+    },
+    {
+        path: '/404',
+        name: '404',
+        component: NotFound,
+    }, {
+        path: '*',
+        redirect: '/404'
     }
 ]
 

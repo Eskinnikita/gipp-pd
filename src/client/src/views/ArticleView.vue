@@ -10,7 +10,6 @@
 
     export default {
         created() {
-            console.log(this.newsId)
             this.news = this.newsModule.newsList.find(el => el.id === +this.newsId)
         },
         data() {

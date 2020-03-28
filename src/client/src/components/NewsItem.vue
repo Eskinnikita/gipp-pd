@@ -1,8 +1,7 @@
 <template>
-        <div class="news-item">
-            <router-link :to="{path:`/news/${newsInfo.id}`}">
-                   {{newsInfo.title}}
-            </router-link>
+        <div class="news-item" @click="goToArticle(newsInfo.id)">
+                <h2 class="news-item__title">{{newsInfo.title}}</h2>
+                <p>{{splicedText(newsInfo.text)}}</p>
         </div>
 </template>
 
@@ -13,27 +12,34 @@
                 required: true,
                 type: Object
             }
+        },
+        methods: {
+            goToArticle(id) {
+                this.$router.push(`/news/${id}`)
+            },
+            splicedText(text) {
+                return text.split(' ').splice(0, 10).join(' ') + '...'
+            }
         }
     }
 </script>
 
 <style lang="scss" scoped>
     .news-item {
-        width: 25%;
-        border: 1px solid #bebebe;
+        width: calc(100% / 3 - 20px);
+        cursor: pointer;
         box-sizing: border-box;
         border-radius: $border-radius;
-        margin: 10px;
+        padding: 10px 20px 20px 20px;
+        margin: 0 0 30px 0;
         text-align: left;
-        @include flex(center, flex-start, column);
         &__title {
-            font-size: 20px;
+            font-size: 25px;
+            margin-bottom: 10px;
             font-weight: bold;
         }
-        a {
-            padding: 10px;
-            width: 100%;
-            height: 100%;
+        &:hover &__title{
+            text-decoration: underline;
         }
     }
 

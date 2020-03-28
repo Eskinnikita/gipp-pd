@@ -11,7 +11,10 @@
             </div>
             <div class="top__right">
                 <router-link to="/article-editor">
-                    <button-comp :href="'#'">добавить статью</button-comp>
+                    <button-comp class="admin-panel__button" :href="'#'">Добавить статью <i class="fas fa-plus"></i></button-comp>
+                </router-link>
+                <router-link to="/edit-page">
+                    <button-comp class="admin-panel__button" :href="'#'">Редактировать сайт <i class="fas fa-edit"></i></button-comp>
                 </router-link>
             </div>
         </div>
@@ -41,6 +44,10 @@
     .admin-panel {
         &__top {
             @include flex(space-between, center, row);
+        }
+
+        &__button {
+            margin: 0 5px;
         }
     }
 
