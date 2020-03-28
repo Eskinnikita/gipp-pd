@@ -65,4 +65,9 @@
         text-decoration: none;
         color: #000;
     }
+
+    .title {
+        font-size: 25px;
+        font-weight: bold;
+    }
 </style>

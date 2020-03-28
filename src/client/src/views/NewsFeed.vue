@@ -6,18 +6,9 @@
                     :key="index"
                     :news-info="newsInfo"
             />
-<!--            <div-->
-<!--                 class="news-block"-->
-<!--                 v-for="(newsItem, index) in newsModule.shownNews"-->
-<!--                 :key="index"-->
-<!--            >-->
-<!--                <router-link :to="{path:`/news/${newsItem.id}`}">-->
-<!--                    {{newsItem.title}}-->
-<!--                </router-link>-->
-<!--            </div>-->
         </template>
         <template v-else>
-            А новостей-то и нет вовсе
+            <h1>К сожалению, мы не нашли новостей для данной рубрики...</h1>
         </template>
     </div>
 </template>
@@ -35,8 +26,9 @@
                 this.$store.commit('GET_ALL_NEWS')
             }
             else {
-                const rubric = this.pageModule.publisher.rubrics.find(el => el.uri === this.$route.params.name)
-                this.$store.commit('GET_RUBRIC_NEWS', rubric.id)
+                console.log(this.$route.params.name)
+                // const rubric = this.pageModule.publisher.rubrics.find(el => el.uri === this.$route.params.name)
+                this.$store.commit('GET_RUBRIC_NEWS', this.$route.params.name)
             }
         },
         data() {
@@ -51,18 +43,7 @@
 <style lang="scss" scoped>
     .news-feed {
         width: 100%;
-        @include flex(flex-start, center, row);
+        display: flex;
         flex-wrap: wrap;
-    }
-    .news-block {
-        flex: 1;
-        padding: 20px;
-        box-sizing: border-box;
-        width: 25%;
-        height: 200px;
-        border: 1px solid #bebebe;
-        font-size: 30px;
-        font-weight: 600;
-        margin: 20px;
     }
 </style>

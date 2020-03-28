@@ -35,8 +35,9 @@
 
 <style lang="scss" scoped>
     .button {
+        height: 40px;
+        text-align: center;
         width: 100%;
-        margin: 10px;
         border: none;
         background: none;
         color: #fff;
