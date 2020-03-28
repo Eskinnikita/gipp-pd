@@ -41,6 +41,7 @@
         border: none;
         background: none;
         color: #fff;
+        margin: 5px 0;
         padding: 10px 15px;
         box-sizing: border-box;
         border-radius: $border-radius;
