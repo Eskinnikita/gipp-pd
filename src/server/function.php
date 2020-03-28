@@ -62,7 +62,7 @@
      $stmt->execute();
  }
 
- function get_user($id, $pdo){
+ function get_user_by_id($id, $pdo){
      $stmt = $pdo->prepare("SELECT * FROM user WHERE id=:id");
      $stmt->bindParam(':id', $id);
      $stmt->execute();
@@ -97,10 +97,71 @@
      }
      $stmt->bindParam(':id', $id);
      $stmt->execute();
+     return 1;
  }
 
  function delete_user($id, $pdo){
      $stmt = $pdo->prepare("DELETE FROM user WHERE id=:id");
      $stmt->bindParam(':id', $id);
      $stmt->execute();
+ }
+
+ //CRUD для статей
+ function add_news($newsData, $pdo){
+     $date = date('m.d.y G:i');
+     $queryString = "INSERT news SET title=:title, description=:description, text=:text, date=:date, idAuthor=:idAuthor, isDraft=:isDraft, rubricUri=:rubricUri, tags=:tags";
+     $stmt = $pdo->prepare($queryString);
+     $stmt->bindParam(':title', $newsData['title']);
+     $stmt->bindParam(':description', $newsData['description']);
+     $stmt->bindParam(':text', $newsData['text']);
+     $stmt->bindParam(':date', $date);
+     $stmt->bindParam(':idAuthor', $newsData['idAuthor']);
+     $stmt->bindParam(':isDraft', $newsData['isDraft']);
+     $stmt->bindParam(':rubricUri', $newsData['rubricUri']);
+     $stmt->bindParam(':tags', $newsData['tags']);
+     $stmt->execute();
+ }
+
+ function get_news_by_id($id, $pdo){
+     $stmt = $pdo -> prepare("SELECT * FROM news WHERE id=:id");
+     $stmt -> bindParam(':id', $id);
+     $stmt -> execute();
+     return $stmt->fetch(PDO::FETCH_LAZY);
+ }
+
+ function get_news($n, $rubric, $tag, $pdo)
+ {
+     $queryString[0] = "SELECT * FROM news ";
+     if ($n == 1) {
+         $queryString[1] = " LIMIT 20";
+         if ($rubric != '') {
+             $queryString = join('WHERE rubricUri=:rubricUri', $queryString);
+             $stmt = $pdo->prepare($queryString);
+             $stmt -> bindParam(':rubricUri', $rubric);
+         } elseif ($tag!=''){
+             $queryString = join('WHERE tags  LIKE :tag', $queryString);
+             $stmt = $pdo->prepare($queryString);
+             $stmt -> bindParam(':tag', $tag);
+         } else {
+             $queryString = join('', $queryString);
+             $stmt = $pdo -> prepare($queryString);
+         }
+     } elseif ($n>1){
+         $n = ($n-1)*20;
+         $queryString[1] = " LIMIT $n, 20";
+         if ($rubric != '') {
+             $queryString = join('WHERE rubricUri=:rubricUri', $queryString);
+             $stmt = $pdo->prepare($queryString);
+             $stmt -> bindParam(':rubricUri', $rubric);
+         } elseif ($tag!=''){
+             $queryString = join('WHERE tags  LIKE :tag', $queryString);
+             $stmt = $pdo->prepare($queryString);
+             $stmt -> bindParam(':tag', $tag);
+         } else {
+             $queryString = join('', $queryString);
+             $stmt = $pdo -> prepare($queryString);
+         }
+     } else return 'wrong number';
+     $stmt -> execute();
+     return $stmt -> fetchAll(PDO::FETCH_OBJ);
  }
