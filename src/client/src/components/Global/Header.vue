@@ -3,7 +3,7 @@
         <div class="header__container container">
             <div class="header__logo">
                 <router-link to="/">
-                    <h1 class="link">{{title}}</h1>
+                    <h1 class="link" @click="getAllNews">{{title}}</h1>
                 </router-link>
             </div>
             <div class="header__menu">
@@ -25,6 +25,11 @@
             color: {
                 type: String,
                 required: true
+            }
+        },
+        methods: {
+            getAllNews() {
+                this.$store.commit('GET_ALL_NEWS')
             }
         },
         computed: {

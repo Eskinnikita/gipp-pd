@@ -59,6 +59,17 @@
                 }
             }
         },
+        watch: {
+            '$route.params.name': {
+                handler: function(name) {
+                    if(name === undefined) {
+                        this.selectedRubric = 'all'
+                    }
+                },
+                deep: true,
+                immediate: true
+            }
+        },
         computed: {
 
         }
