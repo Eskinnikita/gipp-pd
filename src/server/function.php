@@ -1,11 +1,15 @@
 <?php
+ function logout($token, $pdo){
+     setcookie('token', '', time()-3600);
+ }
+ //Проверка пароля
  function check_pass($login, $pdo){
      $stmt = $pdo->prepare("SELECT pass FROM user WHERE `email` = :login");
      $stmt -> bindParam(':login', $login);
      $stmt -> execute();
      return $stmt->fetchColumn();
  }
-
+//Создание токена
  function create_token($login, $pdo){
     $token = md5(microtime().date('y,m,d'));
     echo $token;
@@ -18,7 +22,7 @@
 //    setcookie('role', $role, time()+60*60*20*30);
     setcookie('token', $token, time()+60*60*24*30);
  }
-
+//Проверка токена
  function check_token($token, $pdo){
      $stmt = $pdo -> prepare("SELECT count(*) FROM auth WHERE `token` = :token");
      $stmt -> bindParam(':token', $token);
@@ -30,7 +34,7 @@
          return 0;
      }
  }
-
+//Функция входа
  function check_login($login, $post_pass, $pdo){
      $pass = check_pass($login, $pdo);
      $hashPass = md5($post_pass.'chikunovrulez');
@@ -38,7 +42,7 @@
          create_token($_POST['login'], $pdo);
      }
  }
-
+/* CRUD для USER*/
 
  function add_user($userData, $pdo){
      $pass = md5($userData['pass'].'chikunovrulez');
