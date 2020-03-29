@@ -1,6 +1,50 @@
 <?php
+ function sendResponse ($method, $requestData, $result, $status, $message, $pdo){
+     switch ($status){
+         case 400:
+             header ('HTTP/1.0 400 Bad Request');
+             $result = array('error'=>$message);
+             break;
+         case 404:
+             header ('HTTP/1.0 404 Not Found');
+             $result = array('error'=> $message);
+             break;
+         case 401:
+             header('HTTP/1.0 401 Unauthorized');
+             $result = array('error' => $message);
+             break;
+     }
+    add_log($method, $result, $requestData, $status, $pdo);
+ }
+
+ function add_log($method, $result, $requestData, $status, $pdo){
+     $date = date('l jS \of F Y h:i:s A');
+     $userAgent = $_SERVER['HTTP_USER_AGENT'];
+     $uri = $_SERVER['REQUEST_URI'];
+
+     $result = json_encode($result, JSON_UNESCAPED_UNICODE);
+     $requestData = json_encode($requestData, JSON_UNESCAPED_UNICODE);
+     $stmt = $pdo->prepare('INSERT INTO log(`method`,`uri`,`requestData`,`responseData`,`status`,`userAgent`,`date`)
+                                     VALUES (:method, :uri, :requestData, :responseData, :status, :userAgent, :date)');
+     $stmt->bindParam(':responseData', $result);
+     $stmt->bindParam(':method', $method);
+     $stmt->bindParam(':uri', $uri);
+     $stmt->bindParam(':requestData', $requestData);
+     $stmt->bindParam(':userAgent', $userAgent);
+     $stmt->bindParam(':date', $date);
+     $stmt->bindParam(':status', $status);
+     $stmt->execute();
+ }
+
+ function get_logs($pdo){
+     $stmt = $pdo -> prepare('SELECT * FROM log WHERE 1');
+     $stmt -> execute();
+     return $stmt->fetchAll(PDO::FETCH_OBJ);
+ }
+
  function logout($token, $pdo){
      setcookie('token', '', time()-3600);
+     return 1;
  }
  //Проверка пароля///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  function check_pass($login, $pdo){
