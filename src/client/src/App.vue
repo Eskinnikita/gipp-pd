@@ -10,7 +10,11 @@
                 :accent-color="pageModule.publisher.accentColor"
                 :rubrics="pageModule.publisher.rubrics"
         />
-        <div class="app__container container">
+        <div v-show="isLoading" class="loading">
+            <loader :color="pageModule.publisher.accentColor"/>
+            <h2 class="loading__message">{{loaderMessage}}</h2>
+        </div>
+        <div v-show="!isLoading" class="app__container container">
             <router-view/>
         </div>
     </div>
@@ -19,12 +23,14 @@
 <script>
     import Header from './components/Global/Header.vue';
     import Rubrics from "./components/Global/Rubrics"
+    import ScaleLoader from 'vue-spinner/src/ScaleLoader.vue'
     import {mapState} from "vuex"
 
     export default {
         components: {
             'page-header': Header,
-            'rubrics': Rubrics
+            'rubrics': Rubrics,
+            'loader': ScaleLoader
         },
         created() {
 
@@ -33,7 +39,7 @@
             return {}
         },
         computed: {
-            ...mapState(['pageModule']),
+            ...mapState(['pageModule', 'isLoading', 'loaderMessage']),
             isAdminPage() {
                 return this.$route.name === 'AllFeed' || this.$route.name === 'RubricFeed' || this.$route.name === 'ArticleView'
             }
@@ -64,6 +70,16 @@
     a {
         text-decoration: none;
         color: #000;
+    }
+
+    .loading {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 17%;
+        &__message {
+            margin-top: 30px;
+        }
     }
 
 </style>
