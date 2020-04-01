@@ -5,6 +5,12 @@ import store from './store'
 import Tabs from 'vue-tabs-component';
 
 Vue.use(Tabs);
+const moment = require('moment')
+require('moment/locale/ru')
+
+Vue.use(require('vue-moment'), {
+  moment
+})
 
 
 

@@ -1,8 +1,9 @@
 <template>
-        <div class="news-item" @click="goToArticle(newsInfo.id)">
-                <h2 class="news-item__title">{{newsInfo.title}}</h2>
-                <p>{{splicedText(newsInfo.text)}}</p>
-        </div>
+    <article class="news-item" @click="goToArticle(newsInfo.id)">
+        <h2 class="news-item__title">{{newsInfo.title}}</h2>
+        <p class="news-item__text">{{splicedText(newsInfo.text)}}</p>
+        <span class="news-item__date">{{ Date.now() }}</span>
+    </article>
 </template>
 
 <script>
@@ -26,20 +27,32 @@
 
 <style lang="scss" scoped>
     .news-item {
-        width: calc(100% / 3 - 20px);
+        width: 100%;
         cursor: pointer;
         box-sizing: border-box;
         border-radius: $border-radius;
-        padding: 10px 20px 20px 20px;
-        margin: 0 0 30px 0;
+        padding: 20px;
         text-align: left;
+        border: 1px solid #bebebe;
+        transition: opacity 0.2s;
+        @include flex(flex-start, flex-start, column);
+
+        &__text {
+            font-family: 'Times New Roman', Serif;
+        }
+
         &__title {
-            font-size: 25px;
+            /*font-size: 25px;*/
             margin-bottom: 10px;
             font-weight: bold;
         }
-        &:hover &__title{
-            text-decoration: underline;
+
+        &__date {
+            margin-top: 10px;
+        }
+
+        &:hover {
+            opacity: 0.6;
         }
     }
 

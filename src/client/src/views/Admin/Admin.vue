@@ -11,10 +11,10 @@
             </div>
             <div class="top__right">
                 <router-link to="/article-editor">
-                    <button-comp class="admin-panel__button" :href="'#'">Добавить статью <i class="fas fa-plus"></i></button-comp>
+                    <button-comp class="admin-panel__button">Добавить статью <i class="fas fa-plus"></i></button-comp>
                 </router-link>
                 <router-link to="/edit-page">
-                    <button-comp class="admin-panel__button" :href="'#'">Редактировать сайт <i class="fas fa-edit"></i></button-comp>
+                    <button-comp class="admin-panel__button">Редактировать сайт <i class="fas fa-edit"></i></button-comp>
                 </router-link>
             </div>
         </div>

@@ -1,11 +1,11 @@
 <template>
     <div class="page-edit">
         <div class="page-edit__block">
-            <h1 class="title page-edit__title">Изменение названия:</h1>
+            <h2 class="title page-edit__title">Изменение названия:</h2>
             <input-comp label="Название издания" v-model="pageChanges.title"/>
         </div>
         <div class="page-edit__block">
-            <h1 class="title page-edit__title">Добавление рубрик:</h1>
+            <h2 class="title page-edit__title">Добавление рубрик:</h2>
             <div class="page-edit__rubrics-container">
                 <div
                         :style="{'backgroundColor': pageModule.publisher.mainColor}"
@@ -26,21 +26,23 @@
             </div>
         </div>
         <div class="page-edit__block">
-            <h1 class="title page-edit__title">Изменение цветов:</h1>
+            <h2 class="title page-edit__title">Изменение цветов:</h2>
             <div class="page-edit__color-picker-container color-picker">
                 <chrome-picker @input="setColor" v-model="colorPicker" />
                 <div class="color-picker__preview">
                     <h2>Основной цвет</h2>
                     <div
                             class="color-picker__color color-picker__color_main"
-                            :style="{'backgroundColor': pageChanges.mainColor}"
+                            :class="{'color-picker__color_active':isMainColorSelected}"
+                            :style="{'backgroundColor': pageChanges.mainColor, 'borderColor': pageChanges.accentColor}"
                             @click="isMainColorSelected = true"
                     >
                     </div>
                     <h2>Акцентный цвет</h2>
                     <div
                             class="color-picker__color color-picker__color_accent"
-                            :style="{'backgroundColor': pageChanges.accentColor}"
+                            :class="{'color-picker__color_active': !isMainColorSelected}"
+                            :style="{'backgroundColor': pageChanges.accentColor, 'borderColor': pageChanges.accentColor}"
                             @click="isMainColorSelected = false"
                     >
                     </div>
@@ -138,7 +140,7 @@
         }
 
         &__title {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         &__color-picker-container {
@@ -168,12 +170,16 @@
 
     .color-picker {
         &__color {
+            box-sizing: border-box;
             width: 100px;
             height: 50px;
             background-color: red;
             margin: 5px 0 25px 0;
             cursor: pointer;
             border-radius: $border-radius;
+            &_active {
+                transform: scale(1.1);
+            }
         }
 
         &__preview {

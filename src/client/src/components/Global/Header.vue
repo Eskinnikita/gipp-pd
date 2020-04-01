@@ -3,10 +3,11 @@
         <div class="header__container container">
             <div class="header__logo">
                 <router-link to="/">
-                    <h1 class="link" @click="getAllNews">{{title}}</h1>
+                    <h2 class="link">{{title}}</h2>
                 </router-link>
             </div>
             <div class="header__menu">
+                <button-comp @click="() => {}" :icon="'fas fa-search'"></button-comp>
                 <router-link to="/login">
                     <a href="#" class="header__admin-button">АДМИН</a>
                 </router-link>
@@ -16,6 +17,8 @@
 </template>
 
 <script>
+    import Button from "../UI/Button"
+
     export default {
         props: {
             title: {
@@ -27,10 +30,11 @@
                 required: true
             }
         },
+        components: {
+            'button-comp': Button
+        },
         methods: {
-            getAllNews() {
-                this.$store.commit('GET_ALL_NEWS')
-            }
+
         },
         computed: {
 

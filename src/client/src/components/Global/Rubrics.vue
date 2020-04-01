@@ -63,6 +63,7 @@
             '$route.params.name': {
                 handler: function(name) {
                     if(name === undefined) {
+                        this.$store.commit('GET_ALL_NEWS')
                         this.selectedRubric = 'all'
                     }
                 },

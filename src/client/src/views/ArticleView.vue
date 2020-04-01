@@ -27,7 +27,6 @@
 <style lang="scss" scoped>
     .article {
         &__title {
-            font-size: 30px;
             font-weight: 600;
             margin-bottom: 20px;
         }
