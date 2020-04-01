@@ -7,6 +7,7 @@ import Login from "../views/Admin/Login"
 import ArticleView from "../views/ArticleView"
 import NotFound from "../views/NotFound"
 import PageEdit from "../views/Admin/PageEdit"
+import ArticlePreview from "../views/Admin/Articles/ArticlePreview"
 
 Vue.use(VueRouter)
 
@@ -46,6 +47,11 @@ const routes = [
         path: '/edit-page',
         name: 'PageEdit',
         component: PageEdit
+    },
+    {
+        path: '/article-preview',
+        name: 'ArticlePreview',
+        component: ArticlePreview
     },
     {
         path: '/404',

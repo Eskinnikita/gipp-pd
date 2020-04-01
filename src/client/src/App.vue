@@ -72,6 +72,23 @@
         color: #000;
     }
 
+    .button {
+        height: 40px;
+        text-align: center;
+        /*width: 100%;*/
+        border: none;
+        background: none;
+        color: #fff;
+        margin: 10px 5px;
+        padding: 10px 15px;
+        box-sizing: border-box;
+        border-radius: $border-radius;
+        font-size: 15px;
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
     .loading {
         display: flex;
         flex-direction: column;

@@ -3,12 +3,12 @@
         <div class="header__container container">
             <div class="header__logo">
                 <router-link to="/">
-                    <h2 class="link">{{title}}</h2>
+                    <h3 class="link">{{title}}</h3>
                 </router-link>
             </div>
             <div class="header__menu">
-                <button-comp @click="() => {}" :icon="'fas fa-search'"></button-comp>
-                <router-link to="/login">
+                <button-comp :on-click="findArticles" :icon="'fas fa-search'"></button-comp>
+                <router-link to="/admin">
                     <a href="#" class="header__admin-button">АДМИН</a>
                 </router-link>
             </div>
@@ -34,7 +34,9 @@
             'button-comp': Button
         },
         methods: {
-
+            findArticles() {
+                console.log('placeholder')
+            }
         },
         computed: {
 

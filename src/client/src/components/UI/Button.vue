@@ -14,7 +14,9 @@
         props: {
             onClick: {
                 type: Function,
-                required: false
+                default: () => {
+                    console.log("button isn't working")
+                }
             },
             icon: {
                 type: String,
@@ -22,10 +24,8 @@
             }
         },
         created() {
-            // console.log(this.onClick)
         },
         methods: {
-
         },
         computed: {
             ...mapState(['pageModule'])

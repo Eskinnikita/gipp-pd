@@ -1,12 +1,18 @@
 <template>
     <div>
-
+        <router-link to="/article-editor">
+            <button-comp>Назад к редактору</button-comp>
+        </router-link>
     </div>
 </template>
 
 <script>
-    export default {
+    import Button from "../../../components/UI/Button"
 
+    export default {
+        components: {
+            'button-comp': Button
+        }
     }
 </script>
 

@@ -94,6 +94,10 @@ export const mutations = {
     GET_RUBRIC_NEWS(state, uri) {
         const newsById = state.newsList.filter(el => el.rubricUri === uri)
         state.shownNews = [...newsById]
+    },
+    ADD_ARTICLE(state, article) {
+        console.log(article)
+        state.newsList.push(article)
     }
 }
 export const actions = {}
