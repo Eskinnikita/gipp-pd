@@ -16,19 +16,19 @@
                             hashtags="vuejs,javascript,framework"
                             inline-template>
                 <div class="article__sharing">
-                    <network class="article__sharing-link" network="facebook">
+                    <network style="padding: 0 10px; border-right: 1px solid #bebebe; cursor:pointer;" network="facebook">
                         <i class="fab fa-facebook"></i>
                     </network>
-                    <network class="article__sharing-link" network="odnoklassniki">
+                    <network style="padding: 0 10px; border-right: 1px solid #bebebe; cursor:pointer;" network="odnoklassniki">
                         <i class="fab fa-odnoklassniki"></i>
                     </network>
-                    <network class="article__sharing-link" network="telegram">
+                    <network style="padding: 0 10px; border-right: 1px solid #bebebe; cursor:pointer;" network="telegram">
                         <i class="fab fa-telegram"></i>
                     </network>
-                    <network class="article__sharing-link" network="twitter">
+                    <network style="padding: 0 10px; border-right: 1px solid #bebebe; cursor:pointer;" network="twitter">
                         <i class="fab fa-twitter"></i>
                     </network>
-                    <network class="article__sharing-link" network="vk">
+                    <network style="padding: 0 10px; border-right: 1px solid #bebebe; cursor:pointer;" network="vk">
                         <i class="fab fa-vk"></i>
                     </network>
                 </div>
@@ -86,8 +86,15 @@
 
         &__sharing {
             border-top: 1px solid #bebebe;
-            padding-top: 12px;
+            padding: 15px 0;
+            display: flex;
+            justify-content: flex-start;
+            font-size: 20px;
+            span {
+                margin-right: 20px;
+            }
         }
+
 
     }
 </style>
