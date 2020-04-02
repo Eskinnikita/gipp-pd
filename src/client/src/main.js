@@ -12,6 +12,9 @@ Vue.use(require('vue-moment'), {
   moment
 })
 
+const SocialSharing = require('vue-social-sharing');
+Vue.use(SocialSharing);
+
 
 
 Vue.config.productionTip = false

@@ -7,7 +7,10 @@
                 </router-link>
             </div>
             <div class="header__menu">
-                <button-comp :on-click="findArticles" :icon="'fas fa-search'"></button-comp>
+                <div class="header__search">
+                    <button-comp v-show="!searchFocused" :on-click="showSearch" :icon="'fas fa-search'"></button-comp>
+                    <input class="header__search-input" type="text" ref="search" v-show="searchFocused" @blur="searchFocused = false">
+                </div>
                 <router-link to="/admin">
                     <a href="#" class="header__admin-button">АДМИН</a>
                 </router-link>
@@ -18,7 +21,6 @@
 
 <script>
     import Button from "../UI/Button"
-
     export default {
         props: {
             title: {
@@ -33,9 +35,20 @@
         components: {
             'button-comp': Button
         },
+        data() {
+            return {
+                searchFocused: false
+            }
+        },
         methods: {
             findArticles() {
-                console.log('placeholder')
+
+            },
+            showSearch() {
+                this.searchFocused = true
+                setTimeout(() => {
+                    this.$refs.search.focus();
+                }, 100)
             }
         },
         computed: {
@@ -62,6 +75,12 @@
             border: 1px solid #fff;
             border-radius: 3px;
             padding: 5px;
+        }
+        &__search {
+
+        }
+        &__menu {
+            @include flex(space-between ,center, row)
         }
     }
 

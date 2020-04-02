@@ -2,7 +2,7 @@
     <article class="news-item" @click="goToArticle(newsInfo.id)">
         <h2 class="news-item__title">{{newsInfo.title}}</h2>
         <p class="news-item__text">{{splicedText(newsInfo.text)}}</p>
-        <span class="news-item__date">{{ Date.now() }}</span>
+        <span class="news-item__date">{{ newsInfo.publicationDate | moment("from", "now", true)}} назад</span>
     </article>
 </template>
 
@@ -19,7 +19,7 @@
                 this.$router.push(`/news/${id}`)
             },
             splicedText(text) {
-                return text.split(' ').splice(0, 10).join(' ') + '...'
+                return text.split('').splice(0, 100).join('') + '...'
             }
         }
     }
@@ -31,13 +31,15 @@
         cursor: pointer;
         box-sizing: border-box;
         border-radius: $border-radius;
-        padding: 20px;
+        padding: 15px;
         text-align: left;
         border: 1px solid #bebebe;
         transition: opacity 0.2s;
         @include flex(flex-start, flex-start, column);
 
         &__text {
+            line-height: 20px;
+            font-size: 18px;
             font-family: 'Times New Roman', Serif;
         }
 
@@ -48,7 +50,9 @@
         }
 
         &__date {
+            font-size: 14px;
             margin-top: 10px;
+            color: rgba(0,0,0,0.6)
         }
 
         &:hover {
