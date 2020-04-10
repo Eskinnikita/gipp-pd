@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="view-container">
         <router-link to="/article-editor">
             <button-comp>Назад к редактору</button-comp>
         </router-link>

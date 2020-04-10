@@ -11,32 +11,49 @@ import ArticlePreview from "../views/Admin/Articles/ArticlePreview"
 
 Vue.use(VueRouter)
 
+
 const routes = [
     {
         path: '/',
         name: 'RubricFeed',
-        component: NewsFeed
+        component: NewsFeed,
+        meta: {
+            title: 'Главное'
+        }
+
     },
     {
         path: '/rubric/:name',
         name: 'RubricFeed',
         props: true,
-        component: NewsFeed
+        component: NewsFeed,
+        meta: {
+            title: 'Рубрика'
+        }
     },
     {
         path: '/admin',
         name: 'Admin',
-        component: Admin
+        component: Admin,
+        meta: {
+            title: 'Панель администратора'
+        }
     },
     {
         path: '/article-editor',
         name: 'ArticleEditor',
-        component: ArticleEditor
+        component: ArticleEditor,
+        meta: {
+            title: 'Редактор'
+        }
     },
     {
         path: '/login',
         name: 'Login',
-        component: Login
+        component: Login,
+        meta: {
+            title: 'Войдите'
+        }
     },
     {
         path: '/news/:id',
@@ -46,20 +63,33 @@ const routes = [
     {
         path: '/edit-page',
         name: 'PageEdit',
-        component: PageEdit
+        component: PageEdit,
+        meta: {
+            title: 'Редактор'
+        }
     },
     {
         path: '/article-preview',
         name: 'ArticlePreview',
-        component: ArticlePreview
+        component: ArticlePreview,
+        meta: {
+            title: 'Предпросмотр статьи'
+        }
     },
     {
         path: '/404',
         name: '404',
         component: NotFound,
-    }, {
+        meta: {
+            title: 'Страница не найдена'
+        }
+    },
+    {
         path: '*',
-        redirect: '/404'
+        redirect: '/404',
+        meta: {
+            title: 'Страница не найдена'
+        }
     }
 ]
 
@@ -67,6 +97,12 @@ const router = new VueRouter({
     mode: 'history',
     base: process.env.BASE_URL,
     routes
+})
+
+router.beforeEach((to, from, next) => {
+    console.log(to)
+    document.title = to.meta.title
+    next()
 })
 
 export default router

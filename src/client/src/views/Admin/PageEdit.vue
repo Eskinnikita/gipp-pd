@@ -1,5 +1,5 @@
 <template>
-    <div class="page-edit">
+    <div class="page-edit view-container">
         <div class="page-edit__block">
             <h2 class="title page-edit__title">Изменение названия:</h2>
             <input-comp label="Название издания" v-model="pageChanges.title"/>
@@ -49,9 +49,11 @@
                 </div>
             </div>
         </div>
-        <button-comp class="page-edit__button" :on-click="saveChanges">Сохранить изменения</button-comp>
-        <button-comp class="page-edit__button" :on-click="cancelChanges">Отменить</button-comp>
-        <div v-if="changesSaved" class="success">Изменения сохранены</div>
+        <div class="page-edit__save">
+            <button-comp class="page-edit__button" :on-click="saveChanges">Сохранить изменения</button-comp>
+            <button-comp class="page-edit__button" :on-click="cancelChanges">Отменить</button-comp>
+            <div v-if="changesSaved" class="success">Изменения сохранены</div>
+        </div>
     </div>
 </template>
 
@@ -60,6 +62,7 @@
     import Input from "../../components/UI/Input"
     import Button from "../../components/UI/Button"
     import { Chrome } from 'vue-color'
+    import transliterate from "../../main"
     export default {
         components: {
             'input-comp': Input,
@@ -69,7 +72,6 @@
         created() {
             this.pageChanges = JSON.parse(JSON.stringify(this.pageModule.publisher))
             this.prevVersion = JSON.parse(JSON.stringify(this.pageModule.publisher))
-            console.log(this.pageChanges)
         },
         data() {
             return {
@@ -84,9 +86,10 @@
         methods: {
             addRubric() {
                 if(this.rubricName !== '') {
+                    const transName =  transliterate(this.rubricName).split(' ').join('-').toLowerCase()
                     this.pageChanges.rubrics.push({
                         title: this.rubricName,
-                        uri: this.rubricName
+                        uri: transName
                     })
                     this.rubricName = ''
                 }
@@ -106,7 +109,6 @@
                 this.pageChanges = JSON.parse(JSON.stringify(this.prevVersion))
             },
             setColor() {
-                console.log(this.colorPicker)
                 if(this.isMainColorSelected) {
                     this.pageChanges.mainColor = this.colorPicker.hex
                 }
@@ -129,14 +131,16 @@
             margin: 0 0 15px 0;
         }
 
-        &__rubric-add {
-
+        &__save {
         }
 
         &__block {
             padding: 30px 15px 10px 15px;
             border-radius: $border-radius;
             margin-bottom: 20px;
+            &:first-child {
+                padding-top: 0;
+            }
         }
 
         &__title {

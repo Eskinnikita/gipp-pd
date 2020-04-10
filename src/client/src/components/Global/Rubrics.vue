@@ -6,7 +6,7 @@
                     :style="{'border-bottom-color': accentColor}"
                     :class="{'rubrics__item_active': selectedRubric === 'all'}"
                     @click="selectRubric(0, 'all')">
-                Главная
+                Главное
             </button>
             <button
                     class="rubrics__item"

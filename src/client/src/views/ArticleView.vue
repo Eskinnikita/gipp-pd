@@ -6,9 +6,12 @@
             <span> · </span>
             <span>{{article.authorId}}</span>
         </div>
-        <div class="article__general-material">
-            <p class="article__block-p">{{article.text}}</p>
-            <p class="article__block-p">{{article.text}}</p>
+        <div class="article__general-material" >
+            <div class="article__text" v-if="article.text" v-html="article.text">
+
+            </div>
+<!--            <p class="article__block-p">{{article.text}}</p>-->
+<!--            <p class="article__block-p">{{article.text}}</p>-->
             <social-sharing url="https://vuejs.org/"
                             title="The Progressive JavaScript Framework"
                             description="Intuitive, Fast and Composable MVVM for building interactive interfaces."
@@ -43,6 +46,7 @@
     export default {
         created() {
             this.article = this.newsModule.newsList.find(el => el.id === +this.newsId)
+            document.title = this.article.title
         },
         data() {
             return {
@@ -56,7 +60,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .article {
         padding-top: 20px;
 
@@ -65,6 +69,14 @@
             margin-bottom: 15px;
             font-size: 36px;
             line-height: 40px;
+        }
+
+        &__text {
+            p {
+                font-family: "Times New Roman", Serif !important;
+                margin: 0 0 20px !important;
+                font-size: 20px !important;
+            }
         }
 
         &__block-p {
@@ -90,9 +102,6 @@
             display: flex;
             justify-content: flex-start;
             font-size: 20px;
-            span {
-                margin-right: 20px;
-            }
         }
 
 

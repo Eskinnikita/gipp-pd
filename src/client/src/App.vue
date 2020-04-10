@@ -67,6 +67,12 @@
         @include container;
     }
 
+    .view-container {
+        max-width: 750px;
+        margin: 0 auto;
+        padding-bottom: 40px;
+    }
+
     a {
         text-decoration: none;
         color: #000;

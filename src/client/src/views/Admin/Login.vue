@@ -1,5 +1,5 @@
 <template>
-    <div class="login">
+    <form class="login" @submit.prevent="goToAdminPanel">
         <input-comp
                 label="Почта"
                 placeholder="example@mail.ru"
@@ -12,8 +12,8 @@
                 v-model="password"
                 type="password"
         />
-        <button-comp :onClick="goToAdminPanel">Войти</button-comp>
-    </div>
+        <button-comp type="submit">Войти</button-comp>
+    </form>
 </template>
 
 <script>
@@ -33,7 +33,7 @@
         },
         methods: {
             goToAdminPanel() {
-                this.$router.push('/admin')
+                // this.$router.push('/admin')
             }
         }
     }

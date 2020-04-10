@@ -15,7 +15,6 @@
             onClick: {
                 type: Function,
                 default: () => {
-                    console.log("button isn't working")
                 }
             },
             icon: {
@@ -42,7 +41,7 @@
         background: none;
         color: #fff;
         margin: 10px 5px;
-        padding: 10px 15px;
+        padding: 10px 25px;
         box-sizing: border-box;
         border-radius: $border-radius;
         font-size: 15px;
