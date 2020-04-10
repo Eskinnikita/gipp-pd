@@ -1,7 +1,7 @@
 <template>
-    <a v-if="href" :href="href" class="button" :style="{'backgroundColor':pageModule.publisher.accentColor}">
-        <slot/>
-    </a>
+    <button v-if="icon" class="button icon-button" @click="onClick">
+        <i :class="icon"></i>
+    </button>
     <button v-else class="button" @click="onClick" :style="{'backgroundColor':pageModule.publisher.accentColor}">
         <slot/>
     </button>
@@ -14,18 +14,17 @@
         props: {
             onClick: {
                 type: Function,
-                required: false
+                default: () => {
+                }
             },
-            href: {
+            icon: {
                 type: String,
                 default: null
             }
         },
         created() {
-            // console.log(this.onClick)
         },
         methods: {
-
         },
         computed: {
             ...mapState(['pageModule'])
@@ -37,16 +36,22 @@
     .button {
         height: 40px;
         text-align: center;
-        width: 100%;
+        /*width: 100%;*/
         border: none;
         background: none;
         color: #fff;
-        padding: 10px 15px;
+        margin: 10px 5px;
+        padding: 10px 25px;
         box-sizing: border-box;
         border-radius: $border-radius;
         font-size: 15px;
         &:hover {
             cursor: pointer;
         }
+    }
+
+    .icon-button {
+        padding: 0 10px;
+        font-size: 20px;
     }
 </style>

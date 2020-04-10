@@ -6,7 +6,7 @@
                     :style="{'border-bottom-color': accentColor}"
                     :class="{'rubrics__item_active': selectedRubric === 'all'}"
                     @click="selectRubric(0, 'all')">
-                Главная
+                Главное
             </button>
             <button
                     class="rubrics__item"
@@ -57,6 +57,18 @@
                     this.$router.push('/', () => {
                     })
                 }
+            }
+        },
+        watch: {
+            '$route.params.name': {
+                handler: function(name) {
+                    if(name === undefined) {
+                        this.$store.commit('GET_ALL_NEWS')
+                        this.selectedRubric = 'all'
+                    }
+                },
+                deep: true,
+                immediate: true
             }
         },
         computed: {

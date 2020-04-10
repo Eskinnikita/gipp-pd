@@ -8,7 +8,12 @@
             />
         </template>
         <template v-else>
-            <h1>К сожалению, мы не нашли новостей для данной рубрики...</h1>
+            <div class="news-feed__not-found">
+                <h2>К сожалению, мы не нашли новостей для данной рубрики... <i class="fas fa-pencil-alt"></i></h2>
+                <router-link to="/article-editor">
+                    <button-comp class="news-feed__add-news">Добавить новость</button-comp>
+                </router-link>
+            </div>
         </template>
     </div>
 </template>
@@ -16,19 +21,19 @@
 <script>
     import {mapState} from 'vuex';
     import NewsItem from "../components/NewsItem"
+    import Button from "../components/UI/Button"
     export default {
         components: {
-            'news-item': NewsItem
+            'news-item': NewsItem,
+            'button-comp': Button
         },
         created() {
-            console.log(this.$route)
             if(this.$route.path === '/') {
                 this.$store.commit('GET_ALL_NEWS')
             }
             else {
-                console.log(this.$route.params.name)
-                // const rubric = this.pageModule.publisher.rubrics.find(el => el.uri === this.$route.params.name)
-                this.$store.commit('GET_RUBRIC_NEWS', this.$route.params.name)
+                const rubricName = this.$route.params.name
+                this.$store.commit('GET_RUBRIC_NEWS', rubricName)
             }
         },
         data() {
@@ -43,7 +48,35 @@
 <style lang="scss" scoped>
     .news-feed {
         width: 100%;
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        grid-gap: 20px;
+        grid-auto-flow: dense;
+        &__not-found {
+            padding-top: 20px;
+            text-align: center;
+        }
     }
+
+    .news-item:nth-child(1) {
+        grid-column: 1/3;
+    }
+
+    .news-item:nth-child(3) {
+        grid-column: 1/3;
+    }
+
+    @media (max-width: 576px) {
+        .news-feed {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-item {
+            margin-bottom: 20px;
+        }
+    }
+
+
+
 </style>

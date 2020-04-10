@@ -1,14 +1,11 @@
 <template>
-    <div class="page-edit">
+    <div class="page-edit view-container">
         <div class="page-edit__block">
-            <h1 class="title page-edit__title">Изменение названия:</h1>
-            <div class="form-group">
-                <label for="" class="form__label">Name</label>
-                <input class="form__input"/>
-            </div>
+            <h2 class="title page-edit__title">Изменение названия:</h2>
+            <input-comp label="Название издания" v-model="pageChanges.title"/>
         </div>
         <div class="page-edit__block">
-            <h1 class="title page-edit__title">Добавление рубрик:</h1>
+            <h2 class="title page-edit__title">Добавление рубрик:</h2>
             <div class="page-edit__rubrics-container">
                 <div
                         :style="{'backgroundColor': pageModule.publisher.mainColor}"
@@ -28,9 +25,35 @@
                 <button-comp :on-click="addRubric">Добавить</button-comp>
             </div>
         </div>
-        <button-comp class="page-edit__button" :on-click="saveChanges">Сохранить изменения</button-comp>
-        <button-comp class="page-edit__button" :on-click="cancelChanges">Отменить</button-comp>
-        <div v-if="changesSaved" class="success">Изменения сохранены</div>
+        <div class="page-edit__block">
+            <h2 class="title page-edit__title">Изменение цветов:</h2>
+            <div class="page-edit__color-picker-container color-picker">
+                <chrome-picker @input="setColor" v-model="colorPicker" />
+                <div class="color-picker__preview">
+                    <h2>Основной цвет</h2>
+                    <div
+                            class="color-picker__color color-picker__color_main"
+                            :class="{'color-picker__color_active':isMainColorSelected}"
+                            :style="{'backgroundColor': pageChanges.mainColor, 'borderColor': pageChanges.accentColor}"
+                            @click="isMainColorSelected = true"
+                    >
+                    </div>
+                    <h2>Акцентный цвет</h2>
+                    <div
+                            class="color-picker__color color-picker__color_accent"
+                            :class="{'color-picker__color_active': !isMainColorSelected}"
+                            :style="{'backgroundColor': pageChanges.accentColor, 'borderColor': pageChanges.accentColor}"
+                            @click="isMainColorSelected = false"
+                    >
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-edit__save">
+            <button-comp class="page-edit__button" :on-click="saveChanges">Сохранить изменения</button-comp>
+            <button-comp class="page-edit__button" :on-click="cancelChanges">Отменить</button-comp>
+            <div v-if="changesSaved" class="success">Изменения сохранены</div>
+        </div>
     </div>
 </template>
 
@@ -38,32 +61,35 @@
     import {mapState} from 'vuex'
     import Input from "../../components/UI/Input"
     import Button from "../../components/UI/Button"
-    // import {Chrome} from 'vue-color'
+    import { Chrome } from 'vue-color'
+    import transliterate from "../../main"
     export default {
         components: {
             'input-comp': Input,
-            'button-comp': Button
-            // 'chrome-picker': Chrome
+            'button-comp': Button,
+            'chrome-picker': Chrome
         },
         created() {
             this.pageChanges = JSON.parse(JSON.stringify(this.pageModule.publisher))
             this.prevVersion = JSON.parse(JSON.stringify(this.pageModule.publisher))
-            console.log(this.pageChanges)
         },
         data() {
             return {
                 pageChanges: {},
                 prevVersion: {},
                 rubricName: '',
-                changesSaved: false
+                changesSaved: false,
+                colorPicker: '',
+                isMainColorSelected: true
             }
         },
         methods: {
             addRubric() {
                 if(this.rubricName !== '') {
+                    const transName =  transliterate(this.rubricName).split(' ').join('-').toLowerCase()
                     this.pageChanges.rubrics.push({
                         title: this.rubricName,
-                        uri: this.rubricName
+                        uri: transName
                     })
                     this.rubricName = ''
                 }
@@ -81,6 +107,14 @@
             },
             cancelChanges() {
                 this.pageChanges = JSON.parse(JSON.stringify(this.prevVersion))
+            },
+            setColor() {
+                if(this.isMainColorSelected) {
+                    this.pageChanges.mainColor = this.colorPicker.hex
+                }
+                else {
+                    this.pageChanges.accentColor = this.colorPicker.hex
+                }
             }
         },
         computed: {
@@ -97,19 +131,24 @@
             margin: 0 0 15px 0;
         }
 
-        &__rubric-add {
-
+        &__save {
         }
 
         &__block {
-            padding: 30px 15px 20px 15px;
+            padding: 30px 15px 10px 15px;
             border-radius: $border-radius;
-            border: 1px solid rgba(0, 0, 0, 0.6);
             margin-bottom: 20px;
+            &:first-child {
+                padding-top: 0;
+            }
         }
 
         &__title {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        &__color-picker-container {
+            @include flex(flex-start, flex-start, row);
         }
     }
 
@@ -130,6 +169,25 @@
             height: 25px;
             border: none;
             cursor: pointer;
+        }
+    }
+
+    .color-picker {
+        &__color {
+            box-sizing: border-box;
+            width: 100px;
+            height: 50px;
+            background-color: red;
+            margin: 5px 0 25px 0;
+            cursor: pointer;
+            border-radius: $border-radius;
+            &_active {
+                transform: scale(1.1);
+            }
+        }
+
+        &__preview {
+            margin-left: 50px;
         }
     }
 
