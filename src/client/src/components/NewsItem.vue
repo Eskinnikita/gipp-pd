@@ -1,7 +1,7 @@
 <template>
     <article class="news-item" @click="goToArticle(newsInfo.id)">
         <h2 class="news-item__title">{{newsInfo.title}}</h2>
-        <p class="news-item__text">{{splicedText(newsInfo.text)}}</p>
+        <p class="news-item__text">{{splicedText(newsInfo.annotation)}}</p>
         <span class="news-item__date">{{ newsInfo.publicationDate | moment("from", "now", true)}} назад</span>
     </article>
 </template>
@@ -19,7 +19,9 @@
                 this.$router.push(`/news/${id}`)
             },
             splicedText(text) {
-                return text.split('').splice(0, 100).join('') + '...'
+                if(text) {
+                    return text.split('').splice(0, 100).join('') + '...'
+                }
             }
         }
     }

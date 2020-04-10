@@ -48,10 +48,37 @@
             this.article = this.newsModule.newsList.find(el => el.id === +this.newsId)
             document.title = this.article.title
         },
+        mounted() {
+            this.oembedToIframe()
+        },
         data() {
             return {
                 newsId: this.$route.params.id,
                 article: null
+            }
+        },
+        methods: {
+            oembedToIframe() {
+                const oembed = document.querySelectorAll('oembed');
+                if(oembed.length !== 0) {
+                    for(let i = 0; i < oembed.length; i++) {
+                        const videoUrl = oembed[i].getAttribute('url')
+                        const iframeVideoUrl = this.getVideoId(videoUrl)
+                        const iframe = document.createElement('iframe')
+                        iframe.setAttribute('src', `//www.youtube.com/embed/${iframeVideoUrl}`)
+                        oembed[i].parentNode.appendChild(iframe)
+                        oembed[i].parentNode.removeChild(oembed[i])
+                    }
+                }
+            },
+            getVideoId(url) {
+                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=)([^#?]*).*/;
+                const match = url.match(regExp);
+                if (match && match[2].length === 11) {
+                    return match[2];
+                } else {
+                    return 'error';
+                }
             }
         },
         computed: {

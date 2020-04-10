@@ -6,11 +6,12 @@
         <div class="article-editor__block">
             <label>Выберете рубрики:</label>
             <multiselect
-                    v-model="article.rubricsUri"
+                    v-model="rubrics"
                     track-by="title"
                     label="title"
                     :multiple="true"
                     :taggable="true"
+                    :hide-selected="true"
                     :options="pageModule.publisher.rubrics"
             >
             </multiselect>
@@ -44,7 +45,6 @@
             'input-comp': Input,
             'button-comp': Button,
             'multiselect': Multiselect
-
         },
         created() {
 
@@ -71,6 +71,9 @@
         },
         methods: {
             addArticle() {
+                this.rubrics.forEach(rubric => {
+                    this.article.rubricsUri.push(rubric.uri)
+                })
                 console.log(this.article)
                 this.$store.commit('ADD_ARTICLE', this.article)
             }
