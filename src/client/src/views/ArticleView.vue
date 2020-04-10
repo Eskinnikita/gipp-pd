@@ -66,6 +66,8 @@
                         const iframeVideoUrl = this.getVideoId(videoUrl)
                         const iframe = document.createElement('iframe')
                         iframe.setAttribute('src', `//www.youtube.com/embed/${iframeVideoUrl}`)
+                        iframe.setAttribute('style', `width: 100%; height: 100%`)
+                        iframe.setAttribute('allowfullscreen', `allowfullscreen`)
                         oembed[i].parentNode.appendChild(iframe)
                         oembed[i].parentNode.removeChild(oembed[i])
                     }
@@ -89,13 +91,13 @@
 
 <style lang="scss">
     .article {
-        padding-top: 20px;
-
+        padding: 20px 0 50px;
         &__title {
             font-family: "Times New Roman", Serif;
             margin-bottom: 15px;
             font-size: 36px;
             line-height: 40px;
+            max-width: 700px;
         }
 
         &__text {
@@ -103,6 +105,11 @@
                 font-family: "Times New Roman", Serif !important;
                 margin: 0 0 20px !important;
                 font-size: 20px !important;
+            }
+
+            .media {
+                height: 360px;
+                margin: 25px 0 20px;
             }
         }
 
