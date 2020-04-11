@@ -30,6 +30,9 @@
                 borderColor:${this.borderColor},
                 textColor:${this.textColor}`
             )
+        },
+        computed: {
+
         }
     }
 </script>
@@ -39,7 +42,7 @@
         cursor: pointer;
         position: relative;
         box-sizing: border-box;
-        padding: 0 15px 10px 15px;
+        padding: 0 10px 10px 10px;
         color: #fff;
         background: none;
         border: none;
