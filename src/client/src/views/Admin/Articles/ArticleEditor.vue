@@ -18,12 +18,10 @@
         </div>
         <div class="article-editor__block">
             <label>Текст статьи:</label>
-            <ckeditor
-                    :editor="editor"
-                    :config="editorConfig"
+            <quill-editor
+                    ref="myQuillEditor"
                     v-model="article.text"
-            >
-            </ckeditor>
+            />
         </div>
         <router-link to="/article-preview">
             <button-comp>Показать статью</button-comp>
@@ -37,14 +35,19 @@
     import Input from "../../../components/UI/Input"
     import Button from "../../../components/UI/Button"
     import Multiselect from 'vue-multiselect'
-    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-    // import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
+
+    import 'quill/dist/quill.core.css'
+    import 'quill/dist/quill.snow.css'
+    import 'quill/dist/quill.bubble.css'
+
+    import { quillEditor } from 'vue-quill-editor'
 
     export default {
         components: {
             'input-comp': Input,
             'button-comp': Button,
-            'multiselect': Multiselect
+            'multiselect': Multiselect,
+            'quill-editor': quillEditor
         },
         created() {
 
@@ -54,12 +57,8 @@
         },
         data() {
             return {
-                editor: ClassicEditor,
-                editorConfig: {
-                    height: '30px'
-                },
                 article: {
-                    id: 1,
+                    id: Math.round(Math.random() * (2000 - 10) + 10),
                     rubricsUri: [],
                     authorId: 1,
                     publicationDate: Date.now(),
@@ -108,5 +107,9 @@
         &__tags {
             border-color: #bebebe !important;
         }
+    }
+
+    .ql-editor {
+        min-height: 350px;
     }
 </style>

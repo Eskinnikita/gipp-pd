@@ -12,6 +12,9 @@
             newsInfo: {
                 required: true,
                 type: Object
+            },
+            isAdminPage: {
+                type: Boolean
             }
         },
         methods: {

@@ -2,12 +2,8 @@
     <div class="admin-panel">
         <div class="admin-panel__top">
             <div class="top__left">
-<!--                <router-link to="/article-editor">-->
-<!--                    <button-comp :href="'#'">Мои статьи</button-comp>-->
-<!--                </router-link>-->
-<!--                <router-link to="/article-editor">-->
-<!--                    <button-comp :href="'#'">Черновики</button-comp>-->
-<!--                </router-link>-->
+                <button>Моя статья</button>
+                <button>Черновики</button>
             </div>
             <div class="top__right">
                 <router-link to="/article-editor">
@@ -18,21 +14,33 @@
                 </router-link>
             </div>
         </div>
+        <div class="admin-panel__filters">
+            <input-comp v-model="search" :placeholder="'Поиск'"/>
+        </div>
+        <div class="admin-panel__news">
+            <news-list/>
+        </div>
     </div>
 </template>
 
 <script>
     import Button from '../../components/UI/Button'
+    import NewsList from "../../components/NewsList"
+    import Input from "../../components/UI/Input"
 
     export default {
         components: {
-            'button-comp': Button
+            'button-comp': Button,
+            'news-list': NewsList,
+            'input-comp': Input
         },
         created() {
 
         },
         data() {
-            return {}
+            return {
+                search: ''
+            }
         },
         methods: {},
         computed: {},
@@ -48,6 +56,10 @@
 
         &__button {
             margin: 0 5px;
+        }
+
+        &__news {
+
         }
     }
 

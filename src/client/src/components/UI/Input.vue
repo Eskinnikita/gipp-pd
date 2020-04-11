@@ -5,6 +5,7 @@
             <input class="input-component__input"
                    v-bind="$attrs"
                    :type="type"
+                   :placeholder="placeholder"
                    v-on="$listeners"
                    :value="value"
                    @input="$emit('update', $event.target.value)">
@@ -14,7 +15,7 @@
 
 <script>
     export default {
-        props: ['value', 'label', 'type'],
+        props: ['value', 'label', 'type', 'placeholder'],
         model: {
             prop: "value",
             event: "update"

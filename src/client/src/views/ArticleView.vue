@@ -49,7 +49,6 @@
             document.title = this.article.title
         },
         mounted() {
-            this.oembedToIframe()
         },
         data() {
             return {
@@ -58,30 +57,7 @@
             }
         },
         methods: {
-            oembedToIframe() {
-                const oembed = document.querySelectorAll('oembed');
-                if(oembed.length !== 0) {
-                    for(let i = 0; i < oembed.length; i++) {
-                        const videoUrl = oembed[i].getAttribute('url')
-                        const iframeVideoUrl = this.getVideoId(videoUrl)
-                        const iframe = document.createElement('iframe')
-                        iframe.setAttribute('src', `//www.youtube.com/embed/${iframeVideoUrl}`)
-                        iframe.setAttribute('style', `width: 100%; height: 100%`)
-                        iframe.setAttribute('allowfullscreen', `allowfullscreen`)
-                        oembed[i].parentNode.appendChild(iframe)
-                        oembed[i].parentNode.removeChild(oembed[i])
-                    }
-                }
-            },
-            getVideoId(url) {
-                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=)([^#?]*).*/;
-                const match = url.match(regExp);
-                if (match && match[2].length === 11) {
-                    return match[2];
-                } else {
-                    return 'error';
-                }
-            }
+
         },
         computed: {
             ...mapState(['newsModule'])
@@ -91,7 +67,7 @@
 
 <style lang="scss">
     .article {
-        padding: 20px 0 50px;
+        padding-top: 10px;
         &__title {
             font-family: "Times New Roman", Serif;
             margin-bottom: 15px;
@@ -101,10 +77,29 @@
         }
 
         &__text {
+            font-family: "Times New Roman", Serif !important;
             p {
-                font-family: "Times New Roman", Serif !important;
                 margin: 0 0 20px !important;
                 font-size: 20px !important;
+            }
+
+            a {
+                font-weight: 600;
+            }
+
+            img {
+                width: 100%;
+            }
+
+            iframe {
+                width: 100%;
+                height: 350px;
+            }
+
+            blockquote {
+                border: 1px solid #000;
+                padding: 2px 4px;
+                border-radius: 3px;
             }
 
             .media {

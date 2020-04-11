@@ -1,20 +1,26 @@
 <template>
     <div class="news-feed">
-        <template v-if="newsModule.shownNews.length">
-            <news-item
-                    v-for="(newsInfo, index) in newsModule.shownNews"
-                    :key="index"
-                    :news-info="newsInfo"
-            />
-        </template>
-        <template v-else>
-            <div class="news-feed__not-found">
-                <h2>К сожалению, мы не нашли новостей для данной рубрики... <i class="fas fa-pencil-alt"></i></h2>
-                <router-link to="/article-editor">
-                    <button-comp class="news-feed__add-news">Добавить новость</button-comp>
-                </router-link>
-            </div>
-        </template>
+        <div class="news-feed__news">
+            <template v-if="newsModule.shownNews.length">
+                <news-item
+                        v-for="(newsInfo, index) in newsModule.shownNews"
+                        :key="index"
+                        :news-info="newsInfo"
+                        :is-admin-page="false"
+                />
+            </template>
+            <template v-else>
+                <div class="news-feed__not-found">
+                    <h2>К сожалению, мы не нашли новостей для данной рубрики... <i class="fas fa-pencil-alt"></i></h2>
+                    <router-link to="/article-editor">
+                        <button-comp class="news-feed__add-news">Добавить новость</button-comp>
+                    </router-link>
+                </div>
+            </template>
+        </div>
+        <div class="news-feed__pagination">
+
+        </div>
     </div>
 </template>
 
@@ -39,6 +45,11 @@
         data() {
             return {}
         },
+        methods: {
+            getNewsByPage() {
+
+            }
+        },
         computed: {
             ...mapState(['newsModule', 'pageModule'])
         },
@@ -48,13 +59,15 @@
 <style lang="scss" scoped>
     .news-feed {
         width: 100%;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-        grid-gap: 20px;
-        grid-auto-flow: dense;
-        &__not-found {
-            padding-top: 20px;
-            text-align: center;
+        &__news {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            grid-gap: 20px;
+            grid-auto-flow: dense;
+            &__not-found {
+                padding-top: 20px;
+                text-align: center;
+            }
         }
     }
 
@@ -76,7 +89,4 @@
             margin-bottom: 20px;
         }
     }
-
-
-
 </style>
