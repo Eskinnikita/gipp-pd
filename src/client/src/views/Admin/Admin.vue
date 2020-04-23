@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="admin-panel__news">
-            <news-list />
+            <news-list/>
         </div>
     </div>
 </template>
@@ -55,7 +55,7 @@
             'v-select': vSelect
         },
         created() {
-
+            this.$store.commit('GET_PUBLISHED')
         },
         data() {
             return {
@@ -84,10 +84,13 @@
                 this.selectedPanel = uri
                 switch (uri) {
                     case 'all':
-                        this.shownNews = this.newsModule.newsList;
+                        this.$store.commit('GET_PUBLISHED')
                         break;
                     case 'drafts':
-                        this.shownNews = this.shownNews.splice(0, this.shownNews.length);
+                        this.$store.commit('GET_DRAFTS')
+                        break;
+                    case 'authors':
+                        this.$store.commit('GET_AUTHORS_ARTICLES')
                         break;
                 }
             },

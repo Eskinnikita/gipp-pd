@@ -3,7 +3,7 @@
         <div class="news-feed__news">
             <template v-if="newsModule.shownNews.length">
                 <news-item
-                        v-for="(newsInfo, index) in newsModule.shownNews.reverse()"
+                        v-for="(newsInfo, index) in newsModule.shownNews"
                         :key="index"
                         :news-info="newsInfo"
                         :is-admin-page="false"

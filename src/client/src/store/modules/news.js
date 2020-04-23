@@ -120,23 +120,34 @@ export const state = {
             text: '<p>Равным образом постоянный количественный рост и сфера нашей активности играет важную роль в формировании системы обучения кадров, соответствует насущным потребностям. Разнообразный и богатый опыт консультация с широким активом обеспечивает широкому кругу.</p>'
         }
     ],
-    shownNews: []
+    shownNews: [],
+    adminNews: []
 }
 export const mutations = {
     GET_ALL_NEWS(state) {
-        state.shownNews = state.newsList
+        state.shownNews = state.newsList.filter(el => !el.isDraft)
     },
     GET_RUBRIC_NEWS(state, uri) {
-        const newsByUri = state.newsList.filter(el => el.rubricsUri.indexOf(uri) !== -1)
+        const newsByUri = state.newsList.filter(el => el.rubricsUri.indexOf(uri) !== -1 && !el.isDraft)
         state.shownNews = [...newsByUri]
     },
     ADD_ARTICLE(state, article) {
         state.newsList.push(article)
+    },
+    GET_DRAFTS(state) {
+        const drafts = state.newsList.filter(el => el.isDraft)
+        state.adminNews = [...drafts]
+    },
+    GET_PUBLISHED(state) {
+        const published = state.newsList.filter(el => !el.isDraft)
+        state.adminNews = [...published]
+    },
+    GET_AUTHORS_ARTICLES(state) {
+        const published = state.newsList.filter(el => el.id === 22222222)
+        state.adminNews = [...published]
     }
 }
 export const actions = {}
 export const getters = {
-    draftArticles() {
-        return this.$store.state.newsList.filter(el => el.isDraft)
-    }
+
 }

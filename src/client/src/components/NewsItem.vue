@@ -37,6 +37,7 @@
 
 <style lang="scss" scoped>
     .news-item {
+        min-height: 150px;
         width: 100%;
         cursor: pointer;
         box-sizing: border-box;
@@ -62,6 +63,7 @@
         }
 
         &__info {
+            height: 100%;
             border: 1px solid #bebebe;
             box-sizing: border-box;
             width: 100%;
