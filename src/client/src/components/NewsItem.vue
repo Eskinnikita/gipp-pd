@@ -1,8 +1,13 @@
 <template>
     <article class="news-item" @click="goToArticle(newsInfo.id)">
-        <h2 class="news-item__title">{{newsInfo.title}}</h2>
-        <p class="news-item__text">{{splicedText(newsInfo.annotation)}}</p>
-        <span class="news-item__date">{{ newsInfo.publicationDate | moment("from", "now", true)}} назад</span>
+        <div v-if="newsInfo.previewImage" class="news-item__preview">
+            <img :src="newsInfo.previewImage" >
+        </div>
+        <div class="news-item__info">
+            <h2 class="news-item__title">{{newsInfo.title}}</h2>
+            <p class="news-item__text">{{splicedText(newsInfo.annotation)}}</p>
+            <span class="news-item__date">{{ newsInfo.publicationDate | moment("from", "now", true)}} назад</span>
+        </div>
     </article>
 </template>
 
@@ -35,17 +40,34 @@
         width: 100%;
         cursor: pointer;
         box-sizing: border-box;
-        border-radius: $border-radius;
-        padding: 15px;
         text-align: left;
-        border: 1px solid #bebebe;
-        transition: opacity 0.2s;
+        /*transition: opacity 0.2s;*/
         @include flex(flex-start, flex-start, column);
 
         &__text {
             line-height: 20px;
             font-size: 18px;
             font-family: 'Times New Roman', Serif;
+        }
+
+        &__preview {
+            height: 240px;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-top-left-radius: $border-radius;
+                border-top-right-radius: $border-radius;
+            }
+        }
+
+        &__info {
+            border: 1px solid #bebebe;
+            box-sizing: border-box;
+            width: 100%;
+            padding: 15px;
+            border-bottom-left-radius: $border-radius;
+            border-bottom-right-radius: $border-radius;
         }
 
         &__title {

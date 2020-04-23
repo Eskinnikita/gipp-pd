@@ -3,7 +3,7 @@
         <div class="news-feed__news">
             <template v-if="newsModule.shownNews.length">
                 <news-item
-                        v-for="(newsInfo, index) in newsModule.shownNews"
+                        v-for="(newsInfo, index) in newsModule.shownNews.reverse()"
                         :key="index"
                         :news-info="newsInfo"
                         :is-admin-page="false"
@@ -61,7 +61,7 @@
         width: 100%;
         &__news {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
             grid-gap: 20px;
             grid-auto-flow: dense;
             &__not-found {
@@ -71,13 +71,13 @@
         }
     }
 
-    .news-item:nth-child(1) {
-        grid-column: 1/3;
-    }
+    /*<!--.news-item:nth-child(1) {-->*/
+    /*<!--    grid-column: 1/3;-->*/
+    /*<!--}-->*/
 
-    .news-item:nth-child(3) {
-        grid-column: 1/3;
-    }
+    /*<!--.news-item:nth-child(3) {-->*/
+    /*<!--    grid-column: 1/3;-->*/
+    /*<!--}-->*/
 
     @media (max-width: 576px) {
         .news-feed {

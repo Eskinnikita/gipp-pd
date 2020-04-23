@@ -24,12 +24,7 @@
             },
         },
         created() {
-            console.log(
-                `isActive:${this.isActive},
-                onClick:${this.onClick},
-                borderColor:${this.borderColor},
-                textColor:${this.textColor}`
-            )
+
         },
         computed: {
 
@@ -42,7 +37,7 @@
         cursor: pointer;
         position: relative;
         box-sizing: border-box;
-        padding: 0 10px 10px 10px;
+        padding: 0 10px 7px 10px;
         color: #fff;
         background: none;
         border: none;

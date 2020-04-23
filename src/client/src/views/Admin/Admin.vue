@@ -18,7 +18,8 @@
                     <button-comp class="admin-panel__button">Добавить статью <i class="fas fa-plus"></i></button-comp>
                 </router-link>
                 <router-link to="/edit-page">
-                    <button-comp class="admin-panel__button">Редактировать сайт <i class="fas fa-edit"></i></button-comp>
+                    <button-comp class="admin-panel__button">Редактировать сайт <i class="fas fa-edit"></i>
+                    </button-comp>
                 </router-link>
             </div>
         </div>
@@ -27,11 +28,11 @@
                 <input-comp v-model="search" :placeholder="'Поиск'"/>
             </div>
             <div class="admin-panel__rubrics">
-                <v-select placeholder="Выберете рубрику" :options="pageModule.publisher.rubrics" label="title"/>
+                <v-select v-model="rubric" placeholder="Выберете рубрику" :options="pageModule.publisher.rubrics" label="title"/>
             </div>
         </div>
         <div class="admin-panel__news">
-            <news-list/>
+            <news-list />
         </div>
     </div>
 </template>
@@ -73,7 +74,9 @@
                     }
                 ],
                 search: '',
-                selectedPanel: 'all'
+                rubric: '',
+                selectedPanel: 'all',
+                shownNews: []
             }
         },
         methods: {
@@ -81,7 +84,11 @@
                 this.selectedPanel = uri
                 switch (uri) {
                     case 'all':
-
+                        this.shownNews = this.newsModule.newsList;
+                        break;
+                    case 'drafts':
+                        this.shownNews = this.shownNews.splice(0, this.shownNews.length);
+                        break;
                 }
             },
             checkPanelActive(rubric) {
@@ -89,7 +96,12 @@
             }
         },
         computed: {
-            ...mapState(['pageModule'])
+            ...mapState(['pageModule', 'newsModule']),
+            // filteredNews() {
+            //     this.shownNews.filter(el => {
+            //         return el.title.indexOf(this.search) > -1 || el.rubricsUri.indexOf(this.rubric) > -1
+            //     })
+            // }
         },
         watch: {}
     }

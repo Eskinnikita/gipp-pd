@@ -1,15 +1,14 @@
 <template>
     <div class="rubrics" :style="{'backgroundColor': color}">
         <div class=" rubrics__container container">
-            <button
-                    class="rubrics__item"
-                    :style="{'border-bottom-color': accentColor}"
-                    :class="{'rubrics__item_active': checkRubricActive('all')}"
-                    @click="selectRubric(0, 'all')">
+            <rubric-item
+                    :border-color="accentColor"
+                    :text-color="'#fff'"
+                    :is-active="checkRubricActive('all')"
+                    @click.native="selectRubric(0, 'all')">
                 Главное
-            </button>
-<!--            :on-click="selectRubric(rubric.id, rubric.uri)"-->
-            <rubrics-item
+            </rubric-item>
+            <rubric-item
                     v-for="(rubric, index) in rubrics"
                     :is-active="checkRubricActive(rubric.uri)"
                     @click.native="selectRubric(rubric.id, rubric.uri)"
@@ -18,7 +17,7 @@
                     :key="index"
             >
                 {{rubric.title}}
-            </rubrics-item>
+            </rubric-item>
 <!--            <button-->
 <!--                    class="rubrics__item"-->
 <!--                    v-for="(rubric, index) in rubrics"-->
@@ -36,7 +35,7 @@
     import RubricItem from "./RubricItem"
     export default {
         components: {
-            'rubrics-item': RubricItem
+            'rubric-item': RubricItem
         },
         props: {
             rubrics: {

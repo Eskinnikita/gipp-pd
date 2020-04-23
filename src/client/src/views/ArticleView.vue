@@ -122,7 +122,7 @@
         &__info {
             font-size: 14px;
             color: rgba(0, 0, 0, 0.6);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         &__sharing {

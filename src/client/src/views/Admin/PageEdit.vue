@@ -1,11 +1,11 @@
 <template>
     <div class="page-edit view-container">
         <div class="page-edit__block">
-            <h2 class="title page-edit__title">Изменение названия:</h2>
+<!--            <h2 class="title page-edit__title">Изменение названия:</h2>-->
             <input-comp label="Название издания" v-model="pageChanges.title"/>
         </div>
         <div class="page-edit__block">
-            <h2 class="title page-edit__title">Добавление рубрик:</h2>
+<!--            <h2 class="title page-edit__title">Добавление рубрик:</h2>-->
             <div class="page-edit__rubrics-container">
                 <div
                         :style="{'backgroundColor': pageModule.publisher.mainColor}"
@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="page-edit__block">
-            <h2 class="title page-edit__title">Изменение цветов:</h2>
+<!--            <h2 class="title page-edit__title">Изменение цветов:</h2>-->
             <div class="page-edit__color-picker-container color-picker">
                 <chrome-picker @input="setColor" v-model="colorPicker" />
                 <div class="color-picker__preview">
@@ -137,7 +137,7 @@
         &__block {
             padding: 30px 15px 10px 15px;
             border-radius: $border-radius;
-            margin-bottom: 20px;
+            /*margin-bottom: 20px;*/
             &:first-child {
                 padding-top: 0;
             }

@@ -23,6 +23,7 @@ export default function transliterate(word){
 }
 
 
+
 const SocialSharing = require('vue-social-sharing');
 Vue.use(SocialSharing);
 

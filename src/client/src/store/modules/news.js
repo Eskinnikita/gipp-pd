@@ -7,7 +7,7 @@ export const state = {
             "authorId": 1,
             "publicationDate": 1586571087492,
             "title": "Львы на свободе",
-            "text": 'lol'
+            "text": '<p>Львы повсюду</p>'
         },
         {
             id: 313187712,
@@ -81,7 +81,7 @@ export const state = {
         },
         {
             id: 3333331312312,
-            isDraft: false,
+            isDraft: true,
             rubricsUri: ['siriya'],
             authorId: 111,
             publicationDate: 1569360956,
@@ -91,7 +91,7 @@ export const state = {
         },
         {
             id: 131231241,
-            isDraft: false,
+            isDraft: true,
             rubricsUri: ['bitie'],
             authorId: 1,
             publicationDate: 1576182956,
@@ -101,7 +101,7 @@ export const state = {
         },
         {
             id: 12312312,
-            isDraft: false,
+            isDraft: true,
             rubricsUri: ['siriya'],
             authorId: 1,
             publicationDate: 1550007356,
@@ -111,14 +111,14 @@ export const state = {
         },
         {
             id: 988231,
-            isDraft: false,
+            isDraft: true,
             rubricsUri: ['bitie'],
             authorId: 1,
             publicationDate: 1551735356,
             annotation: 'Равным образом постоянный количественный рост и сфера нашей активности играет важную роль в формировании системы обучения кадров, соответствует насущным потребностям. Разнообразный и богатый опыт консультация с широким активом обеспечивает широкому кругу.',
             title: 'Новость №101213',
             text: '<p>Равным образом постоянный количественный рост и сфера нашей активности играет важную роль в формировании системы обучения кадров, соответствует насущным потребностям. Разнообразный и богатый опыт консультация с широким активом обеспечивает широкому кругу.</p>'
-        },
+        }
     ],
     shownNews: []
 }
@@ -135,4 +135,8 @@ export const mutations = {
     }
 }
 export const actions = {}
-export const getters = {}
+export const getters = {
+    draftArticles() {
+        return this.$store.state.newsList.filter(el => el.isDraft)
+    }
+}
