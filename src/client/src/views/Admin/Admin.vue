@@ -1,7 +1,7 @@
 <template>
     <div class="admin-panel">
         <div class="admin-panel__top">
-            <div class="top__left">
+            <div class="admin-panel__rubrics">
                 <rubric-item
                         v-for="(panel, index) in panels"
                         :is-active="checkPanelActive(panel.uri)"
@@ -13,7 +13,7 @@
                     {{panel.title}}
                 </rubric-item>
             </div>
-            <div class="top__right">
+            <div class="admin-panel__controls">
                 <router-link to="/article-editor">
                     <button-comp class="admin-panel__button">Добавить статью <i class="fas fa-plus"></i></button-comp>
                 </router-link>
@@ -27,7 +27,7 @@
             <div class="admin-panel__search">
                 <input-comp v-model.lazy="search" :placeholder="'Поиск'"/>
             </div>
-            <div class="admin-panel__rubrics">
+            <div class="rubrics-filter">
                 <v-select v-model="rubric" placeholder="Выберете рубрику" :options="pageModule.publisher.rubrics" label="title"/>
             </div>
         </div>
@@ -118,29 +118,23 @@
             margin: 0 5px;
         }
 
-        &__news {
-
-        }
-
         &__filters {
             padding: 10px 0 5px;
-            @include flex(space-between, center, row);
+            @include flex(flex-start, center, row);
         }
 
         &__search {
             @include flex(center, center, row);
-            width: 30%;
+            width: 25%;
             margin-right: 25px;
         }
 
         &__rubrics {
-            width: 25%;
+            @include flex(flex-start, center, row);
         }
     }
 
-    .top {
-        &__left {
-            @include flex(flex-start, center, row);
-        }
+    .rubrics-filter {
+        width: 25%;
     }
 </style>

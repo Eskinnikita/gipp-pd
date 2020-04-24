@@ -21,6 +21,11 @@
             <input ref="previewImageInput" @input="convertToBase64" type="file">
         </div>
         <div class="article-editor__block">
+            <label>Аннотация к статье:</label>
+            <textarea-comp v-model="article.annotation" :rows="5" :resize="false"/>
+<!--            <textarea v-model="article.annotation" name="annotation" id="" cols="30" rows="10"></textarea>-->
+        </div>
+        <div class="article-editor__block">
             <label>Текст статьи:</label>
             <quill-editor
                     ref="myQuillEditor"
@@ -37,6 +42,7 @@
 <script>
     import {mapState} from 'vuex'
     import Input from "../../../components/UI/Input"
+    import Textarea from "../../../components/UI/Textarea"
     import Button from "../../../components/UI/Button"
     import Multiselect from 'vue-multiselect'
     import 'quill/dist/quill.core.css'
@@ -49,6 +55,7 @@
         components: {
             'input-comp': Input,
             'button-comp': Button,
+            'textarea-comp': Textarea,
             'multiselect': Multiselect,
             'quill-editor': quillEditor
         },
@@ -67,7 +74,8 @@
                     publicationDate: Date.now(),
                     title: '',
                     text: '',
-                    previewImage: ''
+                    previewImage: '',
+                    annotation: ''
                 },
                 rubrics: []
             }
@@ -93,9 +101,6 @@
                 this.getBase64(previewImageFile).then(
                     data => this.article.previewImage = data
                 );
-                // console.log(this.getBase64(previewImageFile))
-                // this.article.previewImage = await this.getBase64(previewImageFile)
-                console.log(this.article)
             }
         },
         computed: {

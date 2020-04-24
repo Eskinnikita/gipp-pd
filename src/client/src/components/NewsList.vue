@@ -1,12 +1,14 @@
 <template>
-    <div class="news-list">
-        <template v-if="filteredNews.length">
-            <news-item
-                    v-for="(newsInfo, index) in filteredNews" :key="index"
-                    :news-info="newsInfo"
-                    :is-admin-page="true"
-            />
-        </template>
+    <div class="news-list-wrapper">
+        <div v-if="filteredNews.length" class="news-list">
+            <template >
+                <news-item
+                        v-for="(newsInfo, index) in filteredNews" :key="index"
+                        :news-info="newsInfo"
+                        :is-admin-page="true"
+                />
+            </template>
+        </div>
         <div v-else class="news-list__not-found">
             <h2>Мы ничего не нашли...</h2>
         </div>
@@ -68,14 +70,20 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .news-list {
         width: 100%;
         margin-top: 15px;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-        grid-gap: 20px;
-        grid-auto-flow: dense;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-gap: 15px;
+        /*grid-auto-flow: dense;*/
+
+        .news-item {
+            &__preview {
+                height: 200px;
+            }
+        }
 
         &__not-found {
             margin-top: 30px;
