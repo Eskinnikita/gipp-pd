@@ -5,11 +5,9 @@ import store from './store'
 import Tabs from 'vue-tabs-component';
 import Vuelidate from 'vuelidate'
 const moment = require('moment')
-import CKEditor from '@ckeditor/ckeditor5-vue';
 
 Vue.use(Tabs);
 Vue.use(Vuelidate)
-Vue.use( CKEditor );
 require('moment/locale/ru')
 
 Vue.use(require('vue-moment'), {
@@ -23,6 +21,7 @@ export default function transliterate(word){
     return a[char] || char;
   }).join("");
 }
+
 
 
 const SocialSharing = require('vue-social-sharing');

@@ -12,10 +12,10 @@
             </div>
 <!--            <p class="article__block-p">{{article.text}}</p>-->
 <!--            <p class="article__block-p">{{article.text}}</p>-->
-            <social-sharing url="https://vuejs.org/"
-                            title="The Progressive JavaScript Framework"
-                            description="Intuitive, Fast and Composable MVVM for building interactive interfaces."
-                            quote="Vue is a progressive framework for building user interfaces."
+            <social-sharing :url="url"
+                            :title="article.title"
+                            :description="article.annotation"
+                            :quote="article.title"
                             hashtags="vuejs,javascript,framework"
                             inline-template>
                 <div class="article__sharing">
@@ -45,43 +45,21 @@
 
     export default {
         created() {
+            this.url = window.location.href
             this.article = this.newsModule.newsList.find(el => el.id === +this.newsId)
             document.title = this.article.title
         },
         mounted() {
-            this.oembedToIframe()
         },
         data() {
             return {
                 newsId: this.$route.params.id,
-                article: null
+                article: null,
+                url: null
             }
         },
         methods: {
-            oembedToIframe() {
-                const oembed = document.querySelectorAll('oembed');
-                if(oembed.length !== 0) {
-                    for(let i = 0; i < oembed.length; i++) {
-                        const videoUrl = oembed[i].getAttribute('url')
-                        const iframeVideoUrl = this.getVideoId(videoUrl)
-                        const iframe = document.createElement('iframe')
-                        iframe.setAttribute('src', `//www.youtube.com/embed/${iframeVideoUrl}`)
-                        iframe.setAttribute('style', `width: 100%; height: 100%`)
-                        iframe.setAttribute('allowfullscreen', `allowfullscreen`)
-                        oembed[i].parentNode.appendChild(iframe)
-                        oembed[i].parentNode.removeChild(oembed[i])
-                    }
-                }
-            },
-            getVideoId(url) {
-                const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|v=)([^#?]*).*/;
-                const match = url.match(regExp);
-                if (match && match[2].length === 11) {
-                    return match[2];
-                } else {
-                    return 'error';
-                }
-            }
+
         },
         computed: {
             ...mapState(['newsModule'])
@@ -91,7 +69,7 @@
 
 <style lang="scss">
     .article {
-        padding: 20px 0 50px;
+        padding-top: 10px;
         &__title {
             font-family: "Times New Roman", Serif;
             margin-bottom: 15px;
@@ -101,10 +79,29 @@
         }
 
         &__text {
+            font-family: "Times New Roman", Serif !important;
             p {
-                font-family: "Times New Roman", Serif !important;
                 margin: 0 0 20px !important;
                 font-size: 20px !important;
+            }
+
+            a {
+                font-weight: 600;
+            }
+
+            img {
+                width: 100%;
+            }
+
+            iframe {
+                width: 100%;
+                height: 350px;
+            }
+
+            blockquote {
+                border: 1px solid #000;
+                padding: 2px 4px;
+                border-radius: 3px;
             }
 
             .media {
@@ -127,7 +124,7 @@
         &__info {
             font-size: 14px;
             color: rgba(0, 0, 0, 0.6);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         &__sharing {

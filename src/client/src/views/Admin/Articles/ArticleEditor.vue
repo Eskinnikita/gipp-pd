@@ -17,13 +17,15 @@
             </multiselect>
         </div>
         <div class="article-editor__block">
+            <label>Фото на превью:</label>
+            <input ref="previewImageInput" @input="convertToBase64" type="file">
+        </div>
+        <div class="article-editor__block">
             <label>Текст статьи:</label>
-            <ckeditor
-                    :editor="editor"
-                    :config="editorConfig"
+            <quill-editor
+                    ref="myQuillEditor"
                     v-model="article.text"
-            >
-            </ckeditor>
+            />
         </div>
         <router-link to="/article-preview">
             <button-comp>Показать статью</button-comp>
@@ -37,14 +39,18 @@
     import Input from "../../../components/UI/Input"
     import Button from "../../../components/UI/Button"
     import Multiselect from 'vue-multiselect'
-    import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-    // import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
+    import 'quill/dist/quill.core.css'
+    import 'quill/dist/quill.snow.css'
+    import 'quill/dist/quill.bubble.css'
+
+    import {quillEditor} from 'vue-quill-editor'
 
     export default {
         components: {
             'input-comp': Input,
             'button-comp': Button,
-            'multiselect': Multiselect
+            'multiselect': Multiselect,
+            'quill-editor': quillEditor
         },
         created() {
 
@@ -54,17 +60,14 @@
         },
         data() {
             return {
-                editor: ClassicEditor,
-                editorConfig: {
-                    height: '30px'
-                },
                 article: {
-                    id: 1,
+                    id: Math.floor(Math.random() * (2000 - 10) + 10),
                     rubricsUri: [],
                     authorId: 1,
                     publicationDate: Date.now(),
                     title: '',
-                    text: ''
+                    text: '',
+                    previewImage: ''
                 },
                 rubrics: []
             }
@@ -76,14 +79,29 @@
                 })
                 console.log(this.article)
                 this.$store.commit('ADD_ARTICLE', this.article)
+            },
+            getBase64(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = error => reject(error);
+                });
+            },
+            async convertToBase64() {
+                const previewImageFile = this.$refs.previewImageInput.files[0];
+                this.getBase64(previewImageFile).then(
+                    data => this.article.previewImage = data
+                );
+                // console.log(this.getBase64(previewImageFile))
+                // this.article.previewImage = await this.getBase64(previewImageFile)
+                console.log(this.article)
             }
         },
         computed: {
             ...mapState(['pageModule'])
         },
-        watch: {
-
-        }
+        watch: {}
     }
 </script>
 
@@ -93,6 +111,7 @@
         max-width: 750px;
         margin: 0 auto;
         padding-bottom: 40px;
+
         &__block {
             margin-bottom: 30px;
         }
@@ -108,5 +127,9 @@
         &__tags {
             border-color: #bebebe !important;
         }
+    }
+
+    .ql-editor {
+        min-height: 350px;
     }
 </style>

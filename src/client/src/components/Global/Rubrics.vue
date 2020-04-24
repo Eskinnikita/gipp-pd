@@ -1,28 +1,42 @@
 <template>
     <div class="rubrics" :style="{'backgroundColor': color}">
         <div class=" rubrics__container container">
-            <button
-                    class="rubrics__item"
-                    :style="{'border-bottom-color': accentColor}"
-                    :class="{'rubrics__item_active': selectedRubric === 'all'}"
-                    @click="selectRubric(0, 'all')">
+            <rubric-item
+                    :border-color="accentColor"
+                    :text-color="'#fff'"
+                    :is-active="checkRubricActive('all')"
+                    @click.native="selectRubric(0, 'all')">
                 Главное
-            </button>
-            <button
-                    class="rubrics__item"
+            </rubric-item>
+            <rubric-item
                     v-for="(rubric, index) in rubrics"
-                    :style="{'border-bottom-color': accentColor}"
-                    :class="{'rubrics__item_active': rubric.uri === selectedRubric}"
-                    @click="selectRubric(rubric.id, rubric.uri)"
-                    :key="index">
+                    :is-active="checkRubricActive(rubric.uri)"
+                    @click.native="selectRubric(rubric.id, rubric.uri)"
+                    :border-color="accentColor"
+                    :text-color="'#fff'"
+                    :key="index"
+            >
                 {{rubric.title}}
-            </button>
+            </rubric-item>
+<!--            <button-->
+<!--                    class="rubrics__item"-->
+<!--                    v-for="(rubric, index) in rubrics"-->
+<!--                    :style="{'border-bottom-color': accentColor}"-->
+<!--                    :class="{'rubrics__item_active': rubric.uri === selectedRubric}"-->
+<!--                    @click="selectRubric(rubric.id, rubric.uri)"-->
+<!--                    :key="index">-->
+<!--                {{rubric.title}}-->
+<!--            </button>-->
         </div>
     </div>
 </template>
 
 <script>
+    import RubricItem from "./RubricItem"
     export default {
+        components: {
+            'rubric-item': RubricItem
+        },
         props: {
             rubrics: {
                 type: Array,
@@ -48,7 +62,7 @@
         methods: {
             selectRubric(id, uri) {
                 this.selectedRubric = uri
-                if (id !== 0) {
+                if (id !== 0 && uri !== '') {
                     this.$store.commit('GET_RUBRIC_NEWS', uri)
                     this.$router.push(`/rubric/${uri}`, () => {
                     })
@@ -57,6 +71,9 @@
                     this.$router.push('/', () => {
                     })
                 }
+            },
+            checkRubricActive(rubric) {
+                return this.selectedRubric === rubric
             }
         },
         watch: {
@@ -72,7 +89,6 @@
             }
         },
         computed: {
-
         }
     }
 </script>

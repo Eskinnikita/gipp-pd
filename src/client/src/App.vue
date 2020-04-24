@@ -14,7 +14,7 @@
             <loader :color="pageModule.publisher.accentColor"/>
             <h2 class="loading__message">{{loaderMessage}}</h2>
         </div>
-        <div v-show="!isLoading" class="app__container container">
+        <div v-show="!isLoading" class="container app__container">
             <router-view/>
         </div>
     </div>
@@ -50,21 +50,20 @@
 <style lang="scss">
     @import "./scss/reset.scss";
 
+    .container {
+        box-sizing: border-box;
+        padding: 30px 20px 0 20px;
+        @include container;
+    }
+
     .app {
         font-family: Avenir, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
 
         &__container {
-            height: 100vh;
-            padding-top: 20px;
+            padding-bottom: 40px;
         }
-    }
-
-    .container {
-        box-sizing: border-box;
-        padding: 30px 20px 0 20px;
-        @include container;
     }
 
     .view-container {
