@@ -147,7 +147,17 @@ export const mutations = {
     GET_AUTHORS_ARTICLES(state) {
         const published = state.newsList.filter(el => el.id === 22222222)
         state.adminNews = [...published]
+    },
+    TOGGLE_DRAFT(state, id) {
+        const article = state.newsList.find(el => el.id === id)
+        article.isDraft = !article.isDraft
+    }
+
+}
+export const actions = {
+    toggleDraft({commit}, data) {
+        commit('TOGGLE_DRAFT', data.id)
+        commit(data.commit)
     }
 }
-export const actions = {}
 export const getters = {}

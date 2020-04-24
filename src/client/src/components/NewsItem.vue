@@ -4,10 +4,18 @@
          @mouseleave="showControls = false"
     >
         <div class="news-item__controls" v-if="showControls && isAdminPage">
-            <button v-if="!newsInfo.isDraft" class="news-item__button" :style="backgroundAccentColor">
+            <button v-if="!newsInfo.isDraft"
+                    class="news-item__button"
+                    :style="backgroundAccentColor"
+                    @click="toggleDraft(newsInfo.id, 'GET_PUBLISHED')"
+            >
                 В черновики
             </button>
-            <button v-else class="news-item__button" :style="backgroundAccentColor">
+            <button v-else
+                    class="news-item__button"
+                    :style="backgroundAccentColor"
+                    @click="toggleDraft(newsInfo.id, 'GET_DRAFTS')"
+            >
                 Опубликовать
             </button>
             <div class="news-item__icon-buttons">
@@ -60,7 +68,11 @@
                 if (text) {
                     return text.split('').splice(0, 100).join('') + '...'
                 }
+            },
+            toggleDraft(id, commit) {
+                this.$store.dispatch('toggleDraft', {id, commit})
             }
+
         },
         computed: {
             ...mapState(['pageModule']),

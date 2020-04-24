@@ -83,7 +83,7 @@
             selectPanel(uri) {
                 this.selectedPanel = uri
                 this.search = ''
-                this.rubric = ''
+                this.rubric = null
                 switch (uri) {
                     case 'all':
                         this.$store.commit('GET_PUBLISHED')
