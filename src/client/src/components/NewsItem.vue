@@ -6,7 +6,7 @@
         <div class="news-item__info">
             <h2 class="news-item__title">{{newsInfo.title}}</h2>
             <p class="news-item__text">{{splicedText(newsInfo.annotation)}}</p>
-            <span class="news-item__date">{{ newsInfo.publicationDate | moment("from", "now", true)}} назад</span>
+            <div class="news-item__date">{{ newsInfo.publicationDate | moment("from", "now", true)}} назад</div>
         </div>
     </article>
 </template>
@@ -42,7 +42,7 @@
         cursor: pointer;
         box-sizing: border-box;
         text-align: left;
-        /*transition: opacity 0.2s;*/
+        transition: opacity 0.2s;
         @include flex(flex-start, flex-start, column);
 
         &__text {
@@ -52,8 +52,11 @@
         }
 
         &__preview {
+            width: 100%;
             height: 240px;
             img {
+                border: 1px solid #bebebe;
+                box-sizing: border-box;
                 width: 100%;
                 height: 100%;
                 object-fit: cover;

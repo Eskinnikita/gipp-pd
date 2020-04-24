@@ -18,9 +18,6 @@
                 </div>
             </template>
         </div>
-        <div class="news-feed__pagination">
-
-        </div>
     </div>
 </template>
 
@@ -28,16 +25,16 @@
     import {mapState} from 'vuex';
     import NewsItem from "../components/NewsItem"
     import Button from "../components/UI/Button"
+
     export default {
         components: {
             'news-item': NewsItem,
             'button-comp': Button
         },
         created() {
-            if(this.$route.path === '/') {
+            if (this.$route.path === '/') {
                 this.$store.commit('GET_ALL_NEWS')
-            }
-            else {
+            } else {
                 const rubricName = this.$route.params.name
                 this.$store.commit('GET_RUBRIC_NEWS', rubricName)
             }
@@ -46,9 +43,7 @@
             return {}
         },
         methods: {
-            getNewsByPage() {
 
-            }
         },
         computed: {
             ...mapState(['newsModule', 'pageModule'])
@@ -62,12 +57,16 @@
         &__news {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-            grid-gap: 20px;
+            grid-gap: 35px;
             grid-auto-flow: dense;
-            &__not-found {
-                padding-top: 20px;
-                text-align: center;
-            }
+        }
+        &__not-found {
+            text-align: center;
+            padding-top: 20px;
+        }
+
+        &__add-news {
+            margin-top: 20px;
         }
     }
 

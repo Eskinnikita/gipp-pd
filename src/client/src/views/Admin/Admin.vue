@@ -25,14 +25,14 @@
         </div>
         <div class="admin-panel__filters">
             <div class="admin-panel__search">
-                <input-comp v-model="search" :placeholder="'Поиск'"/>
+                <input-comp v-model.lazy="search" :placeholder="'Поиск'"/>
             </div>
             <div class="admin-panel__rubrics">
                 <v-select v-model="rubric" placeholder="Выберете рубрику" :options="pageModule.publisher.rubrics" label="title"/>
             </div>
         </div>
         <div class="admin-panel__news">
-            <news-list/>
+            <news-list :keyword="search.toLowerCase()" :rubric="rubric"/>
         </div>
     </div>
 </template>
@@ -74,7 +74,7 @@
                     }
                 ],
                 search: '',
-                rubric: '',
+                rubric: null,
                 selectedPanel: 'all',
                 shownNews: []
             }
@@ -82,6 +82,8 @@
         methods: {
             selectPanel(uri) {
                 this.selectedPanel = uri
+                this.search = ''
+                this.rubric = ''
                 switch (uri) {
                     case 'all':
                         this.$store.commit('GET_PUBLISHED')
@@ -99,14 +101,10 @@
             }
         },
         computed: {
-            ...mapState(['pageModule', 'newsModule']),
-            // filteredNews() {
-            //     this.shownNews.filter(el => {
-            //         return el.title.indexOf(this.search) > -1 || el.rubricsUri.indexOf(this.rubric) > -1
-            //     })
-            // }
+            ...mapState(['pageModule', 'newsModule'])
         },
-        watch: {}
+        watch: {
+        }
     }
 </script>
 
