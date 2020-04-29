@@ -2,7 +2,7 @@ export const state = {
     publisher: {
         title: 'Загадка дыры',
         mainColor: '#222',
-        accentColor: '#1b8',
+        accentColor: '#3597A7',
         rubrics: [
             {
                 title: 'Путин',

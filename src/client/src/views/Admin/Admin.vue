@@ -28,7 +28,7 @@
                 <input-comp v-model.lazy="search" :placeholder="'Поиск'"/>
             </div>
             <div class="rubrics-filter">
-                <v-select v-model="rubric" placeholder="Выберете рубрику" :options="pageModule.publisher.rubrics" label="title"/>
+                <v-select v-model="rubric" placeholder="Выберите рубрику" :options="pageModule.publisher.rubrics" label="title"/>
             </div>
         </div>
         <div class="admin-panel__news">

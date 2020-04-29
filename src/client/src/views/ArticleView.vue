@@ -7,43 +7,19 @@
             <span>{{article.authorId}}</span>
         </div>
         <div class="article__general-material" >
-            <div class="article__text" v-if="article.text" v-html="article.text">
-
-            </div>
-<!--            <p class="article__block-p">{{article.text}}</p>-->
-<!--            <p class="article__block-p">{{article.text}}</p>-->
-            <social-sharing :url="url"
-                            :title="article.title"
-                            :description="article.annotation"
-                            :quote="article.title"
-                            hashtags="vuejs,javascript,framework"
-                            inline-template>
-                <div class="article__sharing">
-                    <network style="padding: 0 10px; border-right: 1px solid #bebebe; cursor:pointer;" network="facebook">
-                        <i class="fab fa-facebook"></i>
-                    </network>
-                    <network style="padding: 0 10px; border-right: 1px solid #bebebe; cursor:pointer;" network="odnoklassniki">
-                        <i class="fab fa-odnoklassniki"></i>
-                    </network>
-                    <network style="padding: 0 10px; border-right: 1px solid #bebebe; cursor:pointer;" network="telegram">
-                        <i class="fab fa-telegram"></i>
-                    </network>
-                    <network style="padding: 0 10px; border-right: 1px solid #bebebe; cursor:pointer;" network="twitter">
-                        <i class="fab fa-twitter"></i>
-                    </network>
-                    <network style="padding: 0 10px; border-right: 1px solid #bebebe; cursor:pointer;" network="vk">
-                        <i class="fab fa-vk"></i>
-                    </network>
-                </div>
-            </social-sharing>
+            <div class="article__text" v-if="article.text" v-html="article.text"></div>
+            <social-sharing-comp :url="url" :article="article"/>
         </div>
     </div>
 </template>
 
 <script>
     import {mapState} from 'vuex'
-
+    import SocialSharing from "../components/SocialSharing"
     export default {
+        components: {
+            'social-sharing-comp': SocialSharing
+        },
         created() {
             this.url = window.location.href
             this.article = this.newsModule.newsList.find(el => el.id === +this.newsId)
@@ -71,7 +47,6 @@
     .article {
         padding-top: 10px;
         &__title {
-            font-family: "Times New Roman", Serif;
             margin-bottom: 15px;
             font-size: 36px;
             line-height: 40px;
@@ -91,6 +66,7 @@
 
             img {
                 width: 100%;
+                border-radius: $border-radius;
             }
 
             iframe {

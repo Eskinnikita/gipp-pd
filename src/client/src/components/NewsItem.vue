@@ -22,7 +22,7 @@
                 <button class="news-item__button" :style="backgroundAccentColor">
                     <i class="fas fa-pen"></i>
                 </button>
-                <button class="news-item__button" :style="backgroundAccentColor">
+                <button class="news-item__button" :style="backgroundAccentColor" @click="deleteArticle(newsInfo.id)">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
@@ -68,6 +68,9 @@
                 if (text) {
                     return text.split('').splice(0, 100).join('') + '...'
                 }
+            },
+            deleteArticle(id) {
+                this.$store.commit('DELETE_ARTICLE', id)
             },
             toggleDraft(id, commit) {
                 this.$store.dispatch('toggleDraft', {id, commit})
