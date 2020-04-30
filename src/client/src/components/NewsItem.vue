@@ -19,7 +19,7 @@
                 Опубликовать
             </button>
             <div class="news-item__icon-buttons">
-                <button class="news-item__button" :style="backgroundAccentColor">
+                <button class="news-item__button" @click="updateArticle" :style="backgroundAccentColor">
                     <i class="fas fa-pen"></i>
                 </button>
                 <button class="news-item__button" :style="backgroundAccentColor" @click="deleteArticle(newsInfo.id)">
@@ -74,8 +74,11 @@
             },
             toggleDraft(id, commit) {
                 this.$store.dispatch('toggleDraft', {id, commit})
+            },
+            updateArticle() {
+                this.$store.commit('SET_UPDATED_ARTICLE', this.newsInfo.id)
+                this.$router.push('/article-editor')
             }
-
         },
         computed: {
             ...mapState(['pageModule']),
@@ -134,6 +137,7 @@
             line-height: 20px;
             font-size: 18px;
             font-family: 'Times New Roman', Serif;
+            word-break: break-word;
         }
 
         &__preview {

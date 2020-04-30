@@ -123,7 +123,8 @@ export const state = {
         }
     ],
     shownNews: [],
-    adminNews: []
+    adminNews: [],
+    updatedArticle: null
 }
 export const mutations = {
     GET_ALL_NEWS(state) {
@@ -135,6 +136,9 @@ export const mutations = {
         state.shownNews = state.newsList.filter(el => el.rubricsUri.indexOf(uri) !== -1 && !el.isDraft).reverse()
     },
     ADD_ARTICLE(state, article) {
+        state.newsList.push(article)
+    },
+    ADD_DRAFT(state, article) {
         state.newsList.push(article)
     },
     DELETE_ARTICLE(state, id) {
@@ -158,6 +162,21 @@ export const mutations = {
     TOGGLE_DRAFT(state, id) {
         const article = state.newsList.find(el => el.id === id)
         article.isDraft = !article.isDraft
+    },
+    SET_UPDATED_ARTICLE(state, id) {
+        state.updatedArticle = state.newsList.find(el => el.id === id)
+    },
+    RESET_UPDATED_ARTICLE(state) {
+        state.updatedArticle = {}
+    },
+    UPDATE_ARTICLE(state, article) {
+        const articleIndex = state.newsList.findIndex(el => el.id === article.id)
+        if(articleIndex > -1) {
+            state.newsList[articleIndex] = article
+        }
+        else {
+            state.newsList.push(article)
+        }
     }
 
 }

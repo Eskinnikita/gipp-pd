@@ -1,6 +1,6 @@
 <template>
     <div class="article">
-        <h1 class="article__title">{{ article.title }}</h1>
+        <h1 class="article__title" v-if="article.title">{{ article.title }}</h1>
         <div class="article__info">
             <span class="article__date">{{article.publicationDate | moment("LLL")}}</span>
             <span> · </span>
@@ -56,8 +56,10 @@
         &__text {
             font-family: "Times New Roman", Serif !important;
             p {
+                line-height: 1.15em;
                 margin: 0 0 20px !important;
                 font-size: 20px !important;
+                word-break: break-word;
             }
 
             a {
@@ -75,9 +77,9 @@
             }
 
             blockquote {
-                border: 1px solid #000;
-                padding: 2px 4px;
-                border-radius: 3px;
+                border-left: 4px solid #bebebe;
+                padding-left: 5px;
+                font-size: 18px;
             }
 
             .media {
