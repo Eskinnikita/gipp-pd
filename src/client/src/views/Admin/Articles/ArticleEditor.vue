@@ -1,10 +1,21 @@
 <template>
     <div class="article-editor view-container">
+        <modal name="article-preview"
+               :width="900"
+               :height="'auto'"
+               :styles="{
+                   'padding': '25px 30px 50px',
+                   'margin': '10px 0'
+                   }"
+               :scrollable="true"
+        >
+            <article-preview :article="article"/>
+        </modal>
         <div class="article-editor__block">
             <input-comp label="Название статьи" v-model="article.title"/>
         </div>
         <div class="article-editor__block">
-            <label>Выберете рубрики:</label>
+            <label>Выберите рубрики:</label>
             <multiselect
                     v-model="rubrics"
                     track-by="title"
@@ -23,7 +34,7 @@
         <div class="article-editor__block">
             <label>Аннотация к статье:</label>
             <textarea-comp v-model="article.annotation" :rows="5" :resize="false"/>
-<!--            <textarea v-model="article.annotation" name="annotation" id="" cols="30" rows="10"></textarea>-->
+            <!--            <textarea v-model="article.annotation" name="annotation" id="" cols="30" rows="10"></textarea>-->
         </div>
         <div class="article-editor__block">
             <label>Текст статьи:</label>
@@ -32,10 +43,10 @@
                     v-model="article.text"
             />
         </div>
-        <router-link to="/article-preview">
-            <button-comp>Показать статью</button-comp>
-        </router-link>
-        <button-comp :on-click="addArticle">Опубликовать</button-comp>
+        <button-comp :on-click="showPreview">Показать статью</button-comp>
+        <button-comp :on-click="saveChanges" v-if="this.newsModule.updatedArticle">Сохранить изменения</button-comp>
+        <button-comp :on-click="addArticle" v-else>Опубликовать</button-comp>
+        <button-comp :on-click="addDraft">В черновики</button-comp>
     </div>
 </template>
 
@@ -50,9 +61,11 @@
     import 'quill/dist/quill.bubble.css'
 
     import {quillEditor} from 'vue-quill-editor'
+    import ArticlePreview from "../../../components/ArticlePreview"
 
     export default {
         components: {
+            ArticlePreview,
             'input-comp': Input,
             'button-comp': Button,
             'textarea-comp': Textarea,
@@ -60,7 +73,10 @@
             'quill-editor': quillEditor
         },
         created() {
-
+            if(this.newsModule.updatedArticle) {
+                this.article = this.newsModule.updatedArticle
+                this.parseRubricsToUpdate()
+            }
         },
         mounted() {
 
@@ -81,11 +97,25 @@
             }
         },
         methods: {
-            addArticle() {
+            parseRubricsToUpdate() {
+                this.pageModule.publisher.rubrics.forEach(el => {
+                    if(this.article.rubricsUri.indexOf(el.uri) > -1) {
+                        this.rubrics.push(el)
+                    }
+                })
+            },
+            parseRubrics() {
                 this.rubrics.forEach(rubric => {
                     this.article.rubricsUri.push(rubric.uri)
                 })
-                console.log(this.article)
+            },
+            addArticle() {
+                this.parseRubrics()
+                this.$store.commit('ADD_ARTICLE', this.article)
+            },
+            addDraft() {
+                this.parseRubrics()
+                this.article.isDraft = true
                 this.$store.commit('ADD_ARTICLE', this.article)
             },
             getBase64(file) {
@@ -101,12 +131,26 @@
                 this.getBase64(previewImageFile).then(
                     data => this.article.previewImage = data
                 );
+            },
+            showPreview() {
+                this.$modal.show('article-preview');
+            },
+            saveChanges() {
+                this.parseRubrics()
+                this.$store.commit('UPDATE_ARTICLE', this.article)
             }
         },
-        computed: {
-            ...mapState(['pageModule'])
+        beforeDestroy() {
+            this.$store.commit('RESET_UPDATED_ARTICLE')
         },
-        watch: {}
+        computed: {
+            ...mapState(['pageModule', 'newsModule'])
+        },
+        watch: {
+            rubrics() {
+                console.log(this.rubrics)
+            }
+        }
     }
 </script>
 
@@ -116,6 +160,10 @@
         max-width: 750px;
         margin: 0 auto;
         padding-bottom: 40px;
+
+        .vm--modal {
+            font-family: Avenir, Helvetica, Arial, sans-serif;
+        }
 
         &__block {
             margin-bottom: 30px;

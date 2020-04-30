@@ -4,10 +4,12 @@ import router from './router'
 import store from './store'
 import Tabs from 'vue-tabs-component';
 import Vuelidate from 'vuelidate'
+import VModal from 'vue-js-modal'
 const moment = require('moment')
 
 Vue.use(Tabs);
 Vue.use(Vuelidate)
+Vue.use(VModal)
 require('moment/locale/ru')
 
 Vue.use(require('vue-moment'), {

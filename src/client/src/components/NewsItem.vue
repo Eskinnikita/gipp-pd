@@ -4,17 +4,25 @@
          @mouseleave="showControls = false"
     >
         <div class="news-item__controls" v-if="showControls && isAdminPage">
-            <button v-if="!newsInfo.isDraft" class="news-item__button" :style="backgroundAccentColor">
+            <button v-if="!newsInfo.isDraft"
+                    class="news-item__button"
+                    :style="backgroundAccentColor"
+                    @click="toggleDraft(newsInfo.id, 'GET_PUBLISHED')"
+            >
                 В черновики
             </button>
-            <button v-else class="news-item__button" :style="backgroundAccentColor">
+            <button v-else
+                    class="news-item__button"
+                    :style="backgroundAccentColor"
+                    @click="toggleDraft(newsInfo.id, 'GET_DRAFTS')"
+            >
                 Опубликовать
             </button>
             <div class="news-item__icon-buttons">
-                <button class="news-item__button" :style="backgroundAccentColor">
+                <button class="news-item__button" @click="updateArticle" :style="backgroundAccentColor">
                     <i class="fas fa-pen"></i>
                 </button>
-                <button class="news-item__button" :style="backgroundAccentColor">
+                <button class="news-item__button" :style="backgroundAccentColor" @click="deleteArticle(newsInfo.id)">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
@@ -60,6 +68,16 @@
                 if (text) {
                     return text.split('').splice(0, 100).join('') + '...'
                 }
+            },
+            deleteArticle(id) {
+                this.$store.commit('DELETE_ARTICLE', id)
+            },
+            toggleDraft(id, commit) {
+                this.$store.dispatch('toggleDraft', {id, commit})
+            },
+            updateArticle() {
+                this.$store.commit('SET_UPDATED_ARTICLE', this.newsInfo.id)
+                this.$router.push('/article-editor')
             }
         },
         computed: {
@@ -119,6 +137,7 @@
             line-height: 20px;
             font-size: 18px;
             font-family: 'Times New Roman', Serif;
+            word-break: break-word;
         }
 
         &__preview {
