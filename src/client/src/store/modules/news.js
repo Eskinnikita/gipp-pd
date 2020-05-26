@@ -167,7 +167,7 @@ export const mutations = {
         state.updatedArticle = state.newsList.find(el => el.id === id)
     },
     RESET_UPDATED_ARTICLE(state) {
-        state.updatedArticle = {}
+        state.updatedArticle = null
     },
     UPDATE_ARTICLE(state, article) {
         const articleIndex = state.newsList.findIndex(el => el.id === article.id)

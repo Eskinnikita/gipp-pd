@@ -8,17 +8,24 @@ import * as userModule from './modules/user'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  state: {
-    isLoading: false,
-    loaderMessage: ''
-  },
-  mutations: {
-  },
-  actions: {
-  },
-  modules: {
-    pageModule,
-    newsModule,
-    userModule
-  }
+    state: {
+        isLoading: false,
+        loaderMessage: ''
+    },
+    mutations: {
+        SET_TOAST(state, toastInfo) {
+            this._vm.$toast.open(
+                {
+                    message: toastInfo.message,
+                    type: toastInfo.status
+                }
+            )
+        }
+    },
+    actions: {},
+    modules: {
+        pageModule,
+        newsModule,
+        userModule
+    }
 })

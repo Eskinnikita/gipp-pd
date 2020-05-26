@@ -2,16 +2,18 @@
     <div class="textarea-component">
         <textarea
                   :style="{'resize': resize ? 'both' : 'none'}"
+                  :class="{'invalid': invalidCondition ? (invalidCondition) : false}"
                   :rows="rows"
                   :value="value"
                   @input="$emit('update', $event.target.value)"
         ></textarea>
+        <span class="textarea-component__error" v-if="invalidCondition">{{invalidMessage}}</span>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['value','rows', 'resize'],
+        props: ['value','rows', 'resize', 'invalidCondition', 'invalidMessage'],
         model: {
             prop: "value",
             event: "update"
@@ -29,6 +31,11 @@
             font-size: 15px;
             width: 100%;
             box-sizing: border-box;
+        }
+        &__error {
+            color: red;
+            margin-top: 5px;
+            font-size: 13px;
         }
     }
 </style>

@@ -6,7 +6,10 @@ import Tabs from 'vue-tabs-component';
 import Vuelidate from 'vuelidate'
 import VModal from 'vue-js-modal'
 const moment = require('moment')
+import VueToast from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-default.css';
 
+Vue.use(VueToast);
 Vue.use(Tabs);
 Vue.use(Vuelidate)
 Vue.use(VModal)

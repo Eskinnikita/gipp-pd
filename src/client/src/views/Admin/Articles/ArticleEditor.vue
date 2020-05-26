@@ -12,7 +12,13 @@
             <article-preview :article="article"/>
         </modal>
         <div class="article-editor__block">
-            <input-comp label="Название статьи" v-model="article.title"/>
+            <input-comp
+                    label="Название статьи"
+                    :required="true"
+                    :invalid-condition="$v.article.title.$dirty && !$v.article.title.required"
+                    :invalid-message="'Введите название статьи'"
+                    v-model="article.title"
+            />
         </div>
         <div class="article-editor__block">
             <label>Выберите рубрики:</label>
@@ -32,16 +38,23 @@
             <input ref="previewImageInput" @input="convertToBase64" type="file">
         </div>
         <div class="article-editor__block">
-            <label>Аннотация к статье:</label>
-            <textarea-comp v-model="article.annotation" :rows="5" :resize="false"/>
-            <!--            <textarea v-model="article.annotation" name="annotation" id="" cols="30" rows="10"></textarea>-->
+            <label>Аннотация к статье: <span class="required-sign">*</span></label>
+            <textarea-comp
+                    :required="true"
+                    :invalid-condition="$v.article.annotation.$dirty && !$v.article.annotation.required"
+                    :invalid-message="'Введите аннотацию к статье'"
+                    v-model="article.annotation"
+                    :rows="5"
+                    :resize="false"
+            />
         </div>
         <div class="article-editor__block">
-            <label>Текст статьи:</label>
+            <label>Текст статьи:<span class="required-sign">*</span></label>
             <quill-editor
                     ref="myQuillEditor"
                     v-model="article.text"
             />
+            <span class="error" v-if="$v.article.text.$dirty && !$v.article.text.required">Введите текст статьи!</span>
         </div>
         <button-comp :on-click="showPreview">Показать статью</button-comp>
         <button-comp :on-click="saveChanges" v-if="this.newsModule.updatedArticle">Сохранить изменения</button-comp>
@@ -52,6 +65,7 @@
 
 <script>
     import {mapState} from 'vuex'
+    import {required} from 'vuelidate/lib/validators'
     import Input from "../../../components/UI/Input"
     import Textarea from "../../../components/UI/Textarea"
     import Button from "../../../components/UI/Button"
@@ -96,7 +110,32 @@
                 rubrics: []
             }
         },
+        validations: {
+            article: {
+                title: {required},
+                annotation: {required},
+                text: {required}
+            }
+        },
         methods: {
+            addArticle() {
+                if (this.$v.$invalid) {
+                    this.$v.$touch()
+                } else {
+                    this.parseRubrics()
+                    this.$store.commit('ADD_ARTICLE', this.article)
+                    this.$router.push('/')
+                }
+            },
+            saveChanges() {
+                if (this.$v.$invalid) {
+                    this.$v.$touch()
+                } else {
+                    this.parseRubrics()
+                    this.$store.commit('UPDATE_ARTICLE', this.article)
+                    this.$router.push(`/news/${this.article.id}`)
+                }
+            },
             parseRubricsToUpdate() {
                 this.pageModule.publisher.rubrics.forEach(el => {
                     if(this.article.rubricsUri.indexOf(el.uri) > -1) {
@@ -108,10 +147,6 @@
                 this.rubrics.forEach(rubric => {
                     this.article.rubricsUri.push(rubric.uri)
                 })
-            },
-            addArticle() {
-                this.parseRubrics()
-                this.$store.commit('ADD_ARTICLE', this.article)
             },
             addDraft() {
                 this.parseRubrics()
@@ -134,10 +169,6 @@
             },
             showPreview() {
                 this.$modal.show('article-preview');
-            },
-            saveChanges() {
-                this.parseRubrics()
-                this.$store.commit('UPDATE_ARTICLE', this.article)
             }
         },
         beforeDestroy() {
@@ -167,6 +198,12 @@
 
         &__block {
             margin-bottom: 30px;
+
+            .error {
+                color: red;
+                margin-top: 5px;
+                font-size: 13px;
+            }
         }
 
         label {
