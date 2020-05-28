@@ -104,4 +104,12 @@
         }
     }
 
+    .required-sign {
+        color: red;
+    }
+
+    .invalid {
+        border: 1px solid red !important;
+    }
+
 </style>
