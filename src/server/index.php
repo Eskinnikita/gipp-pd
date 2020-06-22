@@ -37,6 +37,7 @@ $uri = str_replace($_SERVER['QUERY_STRING'], '', $uri);
 
 $uri = explode('/', $uri);
 $router = $uri[1];
+$router = str_replace('?', '', $router);
 
 switch ($router){
     case 'logout':

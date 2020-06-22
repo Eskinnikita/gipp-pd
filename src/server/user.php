@@ -1,24 +1,24 @@
 <?php
  if (isset($_COOKIE['token'])) {
      if (check_token($_COOKIE['token'], $pdo)) {
-         if ($method === "GET" && !isset($formData)) {
+         if ($method === "GET" && isset($formData['id'])) {
              $user = get_user_by_id($formData['id'], $pdo);
              dumper($user);
          }
 
-         if ($method === "POST") {
+         elseif ($method === "POST") {
              add_user($formData, $pdo);
          }
 
-         if ($method === "PUT"){
-             update_user($formData['id'], $formData, $pdo);
-             echo " u'r update user with id ".$formData['id'];
+         elseif ($method === "PUT"){
+             update_user($_GET['id'], $formData, $pdo);
+             echo " u'r update user with id ".$_GET['id'];
          }
 
-         if ($method === "DELETE"){
-             delete_user($formData['id'], $pdo);
-             echo " u'r delete user with id ".$formData['id'];
-         }
+         elseif ($method === "DELETE"){
+             delete_user($_GET['id'], $pdo);
+             echo " u'r delete user with id ".$_GET['id'];
+         } else echo 'bad request';
      } else {
          echo 'wrong token';
      }

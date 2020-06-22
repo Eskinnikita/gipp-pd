@@ -1,6 +1,6 @@
 <?php
- function sendResponse ($method, $requestData, $result, $status, $message, $pdo){
-     switch ($status){
+ function sendResponse ($method, $requestData, $result, $httpCode, $message, $pdo){
+     switch ($httpCode){
          case 400:
              header ('HTTP/1.0 400 Bad Request');
              $result = array('error'=>$message);
@@ -14,25 +14,25 @@
              $result = array('error' => $message);
              break;
      }
-    add_log($method, $result, $requestData, $status, $pdo);
+    add_log($method, $result, $requestData, $httpCode, $pdo);
+     echo json_encode(array($result, JSON_UNESCAPED_UNICODE));
  }
 
- function add_log($method, $result, $requestData, $status, $pdo){
+ function add_log($method, $result, $requestData, $httpCode, $pdo){
      $date = date('l jS \of F Y h:i:s A');
      $userAgent = $_SERVER['HTTP_USER_AGENT'];
      $uri = $_SERVER['REQUEST_URI'];
-
      $result = json_encode($result, JSON_UNESCAPED_UNICODE);
      $requestData = json_encode($requestData, JSON_UNESCAPED_UNICODE);
-     $stmt = $pdo->prepare('INSERT INTO log(`method`,`uri`,`requestData`,`responseData`,`status`,`userAgent`,`date`)
-                                     VALUES (:method, :uri, :requestData, :responseData, :status, :userAgent, :date)');
+     $stmt = $pdo->prepare('INSERT INTO log(`method`,`uri`,`requestData`,`responseData`,`httpCode`,`userAgent`,`date`)
+                                     VALUES (:method, :uri, :requestData, :responseData, :httpCode, :userAgent, :date)');
      $stmt->bindParam(':responseData', $result);
      $stmt->bindParam(':method', $method);
      $stmt->bindParam(':uri', $uri);
      $stmt->bindParam(':requestData', $requestData);
      $stmt->bindParam(':userAgent', $userAgent);
      $stmt->bindParam(':date', $date);
-     $stmt->bindParam(':status', $status);
+     $stmt->bindParam(':httpCode', $httpCode);
      $stmt->execute();
  }
 
@@ -56,7 +56,6 @@
 //Создание токена////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  function create_token($login, $pdo){
     $token = md5(microtime().date('y,m,d'));
-    echo $token;
     $stmt = $pdo -> prepare("INSERT INTO auth(`userId`, `token`, `role`) VALUES ((SELECT id FROM user WHERE email=?), ?, (SELECT `role` FROM user WHERE `email`=?))");
     $stmt -> bindValue(1, $login);
     $stmt -> bindValue(2, $token);
@@ -114,24 +113,12 @@
  }
 
  function update_user($id, $userData, $pdo){
-     $query = array();
      if (isset($userData['pass'])){
          $userData['pass'] = md5($userData['pass'].'chikunovrulez');
      }
      $userValues = array("mName", "fName", "lName", "photo", "email", "pass", "role");
-     foreach ($userData as $key=>$value){
-         if (in_array($key, $userValues)){
-             array_push($query, "$key=:$key");
-         }
-     }
-     if (count($query)>1){
-         $queryString = join(', ', $query);
-     } elseif (count($query)==1){
-         $queryString = $query[0];
-     } else {
-         return  'error';
-     }
 
+     $queryString = prepare_query_string_for_update($userValues, $userData);
      $queryString = "UPDATE user SET $queryString WHERE id=:id";
      $stmt = $pdo->prepare($queryString);
      foreach ($userData as $key=>$value){
@@ -143,6 +130,23 @@
      $stmt->execute();
      return 1;
  }
+
+function prepare_query_string_for_update($columns, $formData){
+    $query = array();
+    foreach ($formData as $key=>$value){
+        if (in_array($key, $columns)){
+            array_push($query, "$key=:$key");
+        }
+    }
+    if (count($query)>1){
+        $queryString = join(', ', $query);
+    } elseif (count($query)==1){
+        $queryString = $query[0];
+    } else {
+        return  'error';
+    }
+    return $queryString;
+}
 
  function delete_user($id, $pdo){
      $stmt = $pdo->prepare("DELETE FROM user WHERE id=:id");
@@ -173,61 +177,44 @@
      return $stmt->fetch(PDO::FETCH_LAZY);
  }
 
+ function prepare_news_query_string($queryString, $rubric, $tag, $pdo){
+     if (!empty($rubric)) {
+         if ($rubric != '') {
+             $queryString = join('WHERE rubricUri=:rubricUri', $queryString);
+             $stmt = $pdo->prepare($queryString);
+             $stmt -> bindParam(':rubricUri', $rubric);
+         } elseif ($tag!=''){
+             $queryString = join('WHERE tags  LIKE :tag', $queryString);
+             $stmt = $pdo->prepare($queryString);
+             $stmt -> bindParam(':tag', $tag);
+         } else {
+             $queryString = join('', $queryString);
+             $stmt = $pdo -> prepare($queryString);
+         }
+     }
+     return $stmt;
+ }
+
  function get_news($n, $rubric, $tag, $pdo){
      $queryString[0] = "SELECT * FROM news ";
      if ($n == 1) {
          $queryString[1] = " LIMIT 20";
-         if ($rubric != '') {
-             $queryString = join('WHERE rubricUri=:rubricUri', $queryString);
-             $stmt = $pdo->prepare($queryString);
-             $stmt -> bindParam(':rubricUri', $rubric);
-         } elseif ($tag!=''){
-             $queryString = join('WHERE tags  LIKE :tag', $queryString);
-             $stmt = $pdo->prepare($queryString);
-             $stmt -> bindParam(':tag', $tag);
-         } else {
-             $queryString = join('', $queryString);
-             $stmt = $pdo -> prepare($queryString);
-         }
+         $stmt = prepare_news_query_string($queryString, $rubric, $tag, $pdo);
      } elseif ($n>1){
          $n = ($n-1)*20;
          $queryString[1] = " LIMIT $n, 20";
-         if ($rubric != '') {
-             $queryString = join('WHERE rubricUri=:rubricUri', $queryString);
-             $stmt = $pdo->prepare($queryString);
-             $stmt -> bindParam(':rubricUri', $rubric);
-         } elseif ($tag!=''){
-             $queryString = join('WHERE tags  LIKE :tag', $queryString);
-             $stmt = $pdo->prepare($queryString);
-             $stmt -> bindParam(':tag', $tag);
-         } else {
-             $queryString = join('', $queryString);
-             $stmt = $pdo -> prepare($queryString);
-         }
+         $stmt = prepare_news_query_string($queryString, $rubric, $tag, $pdo);
      } else return 'wrong number';
      $stmt -> execute();
      return $stmt -> fetchAll(PDO::FETCH_OBJ);
  }
 
  function update_news($id, $newsData, $pdo){
-     $query = array();
      $newsColumn = array("title", "description", "text", "isDraft");
      $updateDate = date('m.d.y G:i');
-     foreach ($newsData as $key=>$value){
-         if (in_array($key, $newsColumn)){
-             array_push($query, "$key=:$key");
-         }
-     }
+     $queryString = prepare_query_string_for_update($newsColumn, $newsData);
 
-     if (count($query)>1){
-         $queryString = join(', ', $query);
-     } elseif (count($query)==1){
-         $queryString = $query[0];
-     } else {
-         return  'error';
-     }
-
-     $queryString = "UPDATE news SET $queryString WHERE id=:id";
+     $queryString = "UPDATE news SET $queryString, updateDate=:updateDate WHERE id=:id";
      $stmt = $pdo->prepare($queryString);
      foreach ($newsData as $key=>$value){
          if (in_array($key, $newsColumn)){
@@ -235,6 +222,7 @@
          }
      }
      $stmt->bindParam(':id', $id);
+     $stmt->bindParam(':updateDate', $updateDate);
      $stmt->execute();
      return 1;
 
