@@ -5,6 +5,8 @@ import * as pageModule from './modules/page';
 import * as newsModule from './modules/news';
 import * as userModule from './modules/user'
 
+// import createPersistedState from "vuex-persistedstate";
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -27,5 +29,6 @@ export default new Vuex.Store({
         pageModule,
         newsModule,
         userModule
-    }
+    },
+    // plugins: [createPersistedState()]
 })

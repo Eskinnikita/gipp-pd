@@ -57,9 +57,11 @@
             <span class="error" v-if="$v.article.text.$dirty && !$v.article.text.required">Введите текст статьи!</span>
         </div>
         <button-comp :on-click="showPreview">Показать статью</button-comp>
-        <button-comp :on-click="saveChanges" v-if="this.newsModule.updatedArticle">Сохранить изменения</button-comp>
-        <button-comp :on-click="addArticle" v-else>Опубликовать</button-comp>
+        <button-comp @click.native="openModal(1)" v-if="this.newsModule.updatedArticle">Сохранить изменения</button-comp>
+        <button-comp @click.native="openModal(2)" v-else>Опубликовать</button-comp>
         <button-comp :on-click="addDraft">В черновики</button-comp>
+        <confirm-modal v-if="modalNum === 1" :submit-method="saveChanges">Сохранить изменения?</confirm-modal>
+        <confirm-modal v-if="modalNum === 2" :submit-method="addArticle">Вы уверены, что хотите опубликовать статью?</confirm-modal>
     </div>
 </template>
 
@@ -76,9 +78,11 @@
 
     import {quillEditor} from 'vue-quill-editor'
     import ArticlePreview from "../../../components/ArticlePreview"
+    import ConfirmModal from "../../../components/Global/ConfirmModal"
 
     export default {
         components: {
+            ConfirmModal,
             ArticlePreview,
             'input-comp': Input,
             'button-comp': Button,
@@ -107,7 +111,8 @@
                     previewImage: '',
                     annotation: ''
                 },
-                rubrics: []
+                rubrics: [],
+                modalNum: 1
             }
         },
         validations: {
@@ -127,6 +132,15 @@
                     this.$router.push('/')
                 }
             },
+            openModal(num) {
+                if (this.$v.$invalid) {
+                    this.$v.$touch()
+                }
+                else {
+                    this.modalNum = num
+                    this.$modal.show('confirm-modal')
+                }
+            },
             saveChanges() {
                 if (this.$v.$invalid) {
                     this.$v.$touch()
@@ -134,6 +148,7 @@
                     this.parseRubrics()
                     this.$store.commit('UPDATE_ARTICLE', this.article)
                     this.$router.push(`/news/${this.article.id}`)
+                    this.$modal.hide('confirm-modal')
                 }
             },
             parseRubricsToUpdate() {

@@ -142,7 +142,7 @@ export const mutations = {
         state.newsList.push(article)
     },
     DELETE_ARTICLE(state, id) {
-        const articleIndex = state.newsList.findIndex(el => el.id === id)
+        const articleIndex = state.shownNews.findIndex(el => el.id === id)
         state.newsList.splice(articleIndex, 1)
     },
     GET_DRAFTS(state) {
@@ -186,4 +186,11 @@ export const actions = {
         commit(data.commit)
     }
 }
-export const getters = {}
+export const getters = {
+    published() {
+        return this.$store.state.newsList.filter(el => !el.isDraft)
+    },
+    drafts() {
+        return this.$store.state.newsList.filter(el => !el.isDraft)
+    }
+}

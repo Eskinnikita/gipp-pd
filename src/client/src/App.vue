@@ -112,4 +112,15 @@
         border: 1px solid red !important;
     }
 
+    .toast {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #fff !important;
+        &-success {
+            color: #000 !important;
+        }
+        &-error {
+            color: red !important;
+        }
+    }
+
 </style>
