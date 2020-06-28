@@ -2,6 +2,7 @@ import router from '../../router/index';
 export const state = {
     user: sessionStorage.getItem('user'),
     userData: {
+        id: 1,
         login: 'admin@mail.ru',
         password: '123123',
         name: 'Иванов И.В.',
