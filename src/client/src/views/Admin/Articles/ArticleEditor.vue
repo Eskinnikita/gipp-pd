@@ -58,10 +58,11 @@
         </div>
         <button-comp :on-click="showPreview">Показать статью</button-comp>
         <button-comp @click.native="openModal(1)" v-if="this.newsModule.updatedArticle">Сохранить изменения</button-comp>
-        <button-comp @click.native="openModal(2)" v-else>Опубликовать</button-comp>
-        <button-comp :on-click="addDraft">В черновики</button-comp>
+        <button-comp @click.native="openModal(2)" v-if="!this.newsModule.updatedArticle || article.isDraft">Опубликовать</button-comp>
+        <button-comp @click.native="openModal(3)" v-if="!article.isDraft">В черновики</button-comp>
         <confirm-modal v-if="modalNum === 1" :submit-method="saveChanges">Сохранить изменения?</confirm-modal>
         <confirm-modal v-if="modalNum === 2" :submit-method="addArticle">Вы уверены, что хотите опубликовать статью?</confirm-modal>
+        <confirm-modal v-if="modalNum === 3" :submit-method="addDraft">Отложить статью в черновики?</confirm-modal>
     </div>
 </template>
 
@@ -129,6 +130,10 @@
                 } else {
                     this.parseRubrics()
                     this.$store.commit('ADD_ARTICLE', this.article)
+                    this.$store.commit('SET_TOAST', {
+                        message: 'Статья успешно опубликована!',
+                        type: 'success'
+                    })
                     this.$router.push('/')
                 }
             },
@@ -147,6 +152,10 @@
                 } else {
                     this.parseRubrics()
                     this.$store.commit('UPDATE_ARTICLE', this.article)
+                    this.$store.commit('SET_TOAST', {
+                        message: 'Изменения сохранены!',
+                        type: 'success'
+                    })
                     this.$router.push(`/news/${this.article.id}`)
                     this.$modal.hide('confirm-modal')
                 }
@@ -167,6 +176,12 @@
                 this.parseRubrics()
                 this.article.isDraft = true
                 this.$store.commit('ADD_ARTICLE', this.article)
+                this.$store.commit('SET_TOAST', {
+                    message: 'Статья добавлена в черновики!',
+                    type: 'success'
+                })
+                this.$modal.hide('confirm-modal')
+                this.$router.push('/admin')
             },
             getBase64(file) {
                 return new Promise((resolve, reject) => {

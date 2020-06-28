@@ -19,7 +19,7 @@ export default new Vuex.Store({
             this._vm.$toast.open(
                 {
                     message: toastInfo.message,
-                    type: toastInfo.status
+                    type: toastInfo.type
                 }
             )
         }

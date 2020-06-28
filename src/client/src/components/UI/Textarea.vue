@@ -25,6 +25,8 @@
     .textarea-component {
         width: 100%;
         textarea {
+            font-family: Avenir, Helvetica, Arial, sans-serif;
+            font-weight: normal;
             border-radius: $border-radius;
             border: 1px solid #bebebe;
             padding: 5px;

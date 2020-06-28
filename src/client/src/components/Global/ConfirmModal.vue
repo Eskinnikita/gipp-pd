@@ -9,7 +9,7 @@
                         :style="{'backgroundColor': this.pageModule.publisher.accentColor}" @click="submitMethod">
                     Подтвердить
                 </button>
-                <button class="controls__button controls__button_reject">Отменить</button>
+                <button @click="closeModal" class="controls__button controls__button_reject">Отменить</button>
             </div>
         </div>
     </modal>
@@ -23,6 +23,11 @@
             submitMethod: {
                 type: Function,
                 required: true
+            }
+        },
+        methods: {
+            closeModal() {
+                this.$modal.hide('confirm-modal')
             }
         },
         computed: {
