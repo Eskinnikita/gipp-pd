@@ -7,8 +7,17 @@ import Login from "../views/Admin/Login"
 import ArticleView from "../views/ArticleView"
 import NotFound from "../views/NotFound"
 import PageEdit from "../views/Admin/PageEdit"
+import store from '../store/index'
 
 Vue.use(VueRouter)
+
+const isAuthenticated = (to, from, next) => {
+    if (store.getters.isAuthenticated) {
+        next()
+        return
+    }
+    next('/login')
+}
 
 
 const routes = [
@@ -36,7 +45,9 @@ const routes = [
         component: Admin,
         meta: {
             title: 'Панель администратора'
-        }
+        },
+        beforeEnter: isAuthenticated
+
     },
     {
         path: '/article-editor',
@@ -44,7 +55,8 @@ const routes = [
         component: ArticleEditor,
         meta: {
             title: 'Редактор'
-        }
+        },
+        beforeEnter: isAuthenticated
     },
     {
         path: '/login',
@@ -65,7 +77,8 @@ const routes = [
         component: PageEdit,
         meta: {
             title: 'Редактор'
-        }
+        },
+        beforeEnter: isAuthenticated
     },
     {
         path: '/404',

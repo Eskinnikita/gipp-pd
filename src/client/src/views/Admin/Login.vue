@@ -1,15 +1,15 @@
 <template>
-    <form class="login" @submit.prevent="goToAdminPanel">
+    <form class="login" @submit.prevent="login">
         <input-comp
                 label="Почта"
                 placeholder="example@mail.ru"
-                v-model="name"
+                v-model="user.login"
                 type="text"
         />
         <input-comp
                 label="Пароль"
                 placeholder="123123"
-                v-model="password"
+                v-model="user.password"
                 type="password"
         />
         <button-comp type="submit">Войти</button-comp>
@@ -27,13 +27,18 @@
         },
         data() {
             return {
-                name: '',
-                password: ''
+                user: {
+                    login: '',
+                    password: ''
+                }
             }
         },
         methods: {
-            goToAdminPanel() {
-                // this.$router.push('/admin')
+            login() {
+                this.$store.dispatch('loginUser', this.user)
+                .then(() => {
+                    this.$router.push('/admin')
+                })
             }
         }
     }

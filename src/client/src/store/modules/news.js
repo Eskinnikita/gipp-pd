@@ -146,13 +146,9 @@ export const mutations = {
         state.newsList.splice(articleIndex, 1)
     },
     GET_DRAFTS(state) {
-        // const drafts = state.newsList.filter(el => el.isDraft)
-        // state.adminNews = [...drafts]
         state.adminNews = state.newsList.filter(el => el.isDraft).reverse()
     },
     GET_PUBLISHED(state) {
-        // const published = state.newsList.filter(el => !el.isDraft)
-        // state.adminNews = [...published]
         state.adminNews = state.newsList.filter(el => !el.isDraft).reverse()
     },
     GET_AUTHORS_ARTICLES(state) {
@@ -187,10 +183,10 @@ export const actions = {
     }
 }
 export const getters = {
-    published() {
-        return this.$store.state.newsList.filter(el => !el.isDraft)
-    },
-    drafts() {
-        return this.$store.state.newsList.filter(el => !el.isDraft)
-    }
+    // published() {
+    //     return this.$store.state.newsList.filter(el => !el.isDraft)
+    // },
+    // drafts() {
+    //     return this.$store.state.newsList.filter(el => !el.isDraft)
+    // }
 }

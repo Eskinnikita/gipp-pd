@@ -7,19 +7,24 @@
                 </router-link>
             </div>
             <div class="header__menu">
-<!--                <div class="header__search">-->
-<!--                    <button-comp v-show="!searchFocused" :on-click="showSearch" :icon="'fas fa-search'"></button-comp>-->
-<!--                    <input class="header__search-input" type="text" ref="search" v-show="searchFocused" @blur="searchFocused = false">-->
-<!--                </div>-->
-                <router-link to="/admin">
-                    <a href="#" class="header__admin-button">АДМИН</a>
+                <router-link v-if="!isAuthenticated" to="/admin">
+                    <a href="#" class="header__admin-button">Войти</a>
                 </router-link>
+                <div class="header__user user" v-if="isAuthenticated">
+                    <router-link to="/admin">
+                        <a href="#" class="header__admin-button header__admin-button_name">{{userModule.user.name}}</a>
+                    </router-link>
+                    <button @click="logout" class="user__logout">
+                        выйти
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import {mapState, mapGetters} from 'vuex'
     // import Button from "../UI/Button"
     export default {
         props: {
@@ -33,7 +38,6 @@
             }
         },
         components: {
-            // 'button-comp': Button
         },
         data() {
             return {
@@ -41,18 +45,16 @@
             }
         },
         methods: {
-            // findArticles() {
-            //
-            // },
-            // showSearch() {
-            //     this.searchFocused = true
-            //     setTimeout(() => {
-            //         this.$refs.search.focus();
-            //     }, 100)
-            // }
+            logout() {
+                this.$store.dispatch('logout')
+                .then(() => {
+                    this.$router.push('/')
+                })
+            }
         },
         computed: {
-
+            ...mapState(['userModule']),
+            ...mapGetters(['isAuthenticated'])
         }
     }
 </script>
@@ -75,6 +77,10 @@
             border: 1px solid #fff;
             border-radius: 3px;
             padding: 5px;
+
+            &_name {
+                margin-right: 10px;
+            }
         }
         &__search {
 
@@ -86,6 +92,18 @@
 
     .link {
         color: #fff;
+    }
+
+    .user {
+        &__logout {
+            font-size: 15px;
+            background: none;
+            border: none;
+            color: #fff;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 
     .container {

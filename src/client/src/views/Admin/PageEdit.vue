@@ -50,10 +50,11 @@
             </div>
         </div>
         <div class="page-edit__save">
-            <button-comp class="page-edit__button" :on-click="saveChanges">Сохранить изменения</button-comp>
-            <button-comp class="page-edit__button" :on-click="cancelChanges">Отменить</button-comp>
-            <div v-if="changesSaved" class="success">Изменения сохранены</div>
+            <button-comp class="page-edit__button" @click.native="openModal(1)">Сохранить изменения</button-comp>
+            <button-comp class="page-edit__button" @click.native="openModal(2)">Отменить</button-comp>
         </div>
+        <confirm-modal v-if="modalNum === 1" :submit-method="saveChanges">Сохранить изменения?</confirm-modal>
+        <confirm-modal v-if="modalNum === 2" :submit-method="cancelChanges">Отменить изменения?</confirm-modal>
     </div>
 </template>
 
@@ -63,8 +64,10 @@
     import Button from "../../components/UI/Button"
     import { Chrome } from 'vue-color'
     import transliterate from "../../main"
+    import ConfirmModal from "../../components/Global/ConfirmModal"
     export default {
         components: {
+            ConfirmModal,
             'input-comp': Input,
             'button-comp': Button,
             'chrome-picker': Chrome
@@ -75,6 +78,7 @@
         },
         data() {
             return {
+                modalNum: 1,
                 pageChanges: {},
                 prevVersion: {},
                 rubricName: '',
@@ -84,6 +88,10 @@
             }
         },
         methods: {
+            openModal(num) {
+                this.modalNum = num
+                this.$modal.show('confirm-modal')
+            },
             addRubric() {
                 if(this.rubricName !== '') {
                     const transName =  transliterate(this.rubricName).split(' ').join('-').toLowerCase()
@@ -92,21 +100,26 @@
                         uri: transName
                     })
                     this.rubricName = ''
+                    this.$store.commit('SET_TOAST', {
+                        message: 'Рубрика добавлена!',
+                        type: 'success'
+                    })
                 }
             },
             removeRubric(id) {
                 this.pageChanges.rubrics.splice(id, 1)
-                // this.$store.commit('REMOVE_RUBRIC', id)
+                this.$store.commit('SET_TOAST', {
+                    message: 'Рубрика удалена!',
+                    type: 'success'
+                })
             },
             saveChanges() {
-                this.$store.commit('SAVE_CHANGES', this.pageChanges)
-                this.changesSaved = true
-                setTimeout(() => {
-                    this.changesSaved = false
-                }, 2000)
+                this.$store.dispatch('savePageChanges', this.pageChanges)
+                this.$modal.hide('confirm-modal')
             },
             cancelChanges() {
                 this.pageChanges = JSON.parse(JSON.stringify(this.prevVersion))
+                this.$modal.hide('confirm-modal')
             },
             setColor() {
                 if(this.isMainColorSelected) {
