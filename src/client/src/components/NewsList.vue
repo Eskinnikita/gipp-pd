@@ -12,15 +12,18 @@
         <div v-else class="news-list__not-found">
             <h2>Мы ничего не нашли...</h2>
         </div>
+        <confirm-modal>Удалить статью?</confirm-modal>
     </div>
 </template>
 
 <script>
     import NewsItem from "./NewsItem"
     import {mapState} from 'vuex'
+    import ConfirmModal from "./Global/ConfirmModal"
 
     export default {
         components: {
+            ConfirmModal,
             'news-item': NewsItem
         },
         props: {

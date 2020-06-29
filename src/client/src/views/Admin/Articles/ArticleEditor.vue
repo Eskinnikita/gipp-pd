@@ -207,11 +207,11 @@
         computed: {
             ...mapState(['pageModule', 'newsModule'])
         },
-        watch: {
-            rubrics() {
-                console.log(this.rubrics)
-            }
-        }
+        // watch: {
+        //     rubrics() {
+        //         console.log(this.rubrics)
+        //     }
+        // }
     }
 </script>
 
