@@ -37,8 +37,13 @@ $uri = str_replace($_SERVER['QUERY_STRING'], '', $uri);
 
 $uri = explode('/', $uri);
 $router = $uri[1];
+$router = str_replace('?', '', $router);
 
 switch ($router){
+    case 'logout':
+        logout($_COOKIE['token'], $pdo);
+        echo "u'r unlogined";
+        break;
     case 'login':
         require_once 'login.php';
         break;
