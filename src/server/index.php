@@ -50,8 +50,8 @@ switch ($router){
     case 'user':
         require_once 'user.php';
         break;
-    case 'article';
-        require_once 'article.php';
+    case 'news';
+        require_once 'news.php';
         break;
     default:
         echo 'error';

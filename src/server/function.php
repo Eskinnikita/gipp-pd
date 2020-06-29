@@ -179,23 +179,28 @@ function prepare_query_string_for_update($columns, $formData){
 
  function prepare_news_query_string($queryString, $rubric, $tag, $pdo){
      if (!empty($rubric)) {
-         if ($rubric != '') {
+         if ($rubric != ' ') {
              $queryString = join('WHERE rubricUri=:rubricUri', $queryString);
              $stmt = $pdo->prepare($queryString);
              $stmt -> bindParam(':rubricUri', $rubric);
-         } elseif ($tag!=''){
+             return $stmt;
+         } elseif ($tag!=' '){
              $queryString = join('WHERE tags  LIKE :tag', $queryString);
              $stmt = $pdo->prepare($queryString);
              $stmt -> bindParam(':tag', $tag);
+
+             return $stmt;
          } else {
              $queryString = join('', $queryString);
              $stmt = $pdo -> prepare($queryString);
+
+             return $stmt;
          }
      }
-     return $stmt;
  }
 
  function get_news($n, $rubric, $tag, $pdo){
+     $queryString = array();
      $queryString[0] = "SELECT * FROM news ";
      if ($n == 1) {
          $queryString[1] = " LIMIT 20";
