@@ -5,20 +5,20 @@ export const state = {
         accentColor: '#3597A7',
         rubrics: [
             {
-                title: 'Путин',
-                uri: 'putin'
+                title: 'Политика',
+                uri: 'politika'
             },
             {
-                title: 'Сирия',
-                uri: 'siriya'
+                title: 'Происшествия',
+                uri: 'proisshestviya'
             },
             {
-                title: 'Бытие',
-                uri: 'bitie'
+                title: 'Бизнес',
+                uri: 'biznes'
             },
             {
-                title: 'Коронавирус',
-                uri: 'koronavirus'
+                title: 'Погода',
+                uri: 'pogoda'
             }
         ]
     }
