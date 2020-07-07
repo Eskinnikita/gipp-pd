@@ -3,7 +3,6 @@
      if (check_token($_COOKIE['token'], $pdo)) {
          if ($method === "GET" && isset($formData['id'])) {
              $user = get_user_by_id($formData['id'], $pdo);
-             dumper($user);
          }
 
          elseif ($method === "POST") {
@@ -18,8 +17,8 @@
          elseif ($method === "DELETE"){
              delete_user($_GET['id'], $pdo);
              echo " u'r delete user with id ".$_GET['id'];
-         } else echo 'bad request';
+         } else sendResponse($method, $formData, '', 400, "Bad request", $pdo);
      } else {
-         echo 'wrong token';
+         sendResponse($method, $formData, '', 400, "Wrong token", $pdo);
      }
- } else echo 'unauthorized';
+ } else sendResponse($method, $formData, '', 401, "Unauthorized", $pdo);

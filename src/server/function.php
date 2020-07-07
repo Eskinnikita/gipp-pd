@@ -1,24 +1,6 @@
 <?php
- function sendResponse ($method, $requestData, $result, $httpCode, $message, $pdo){
-     switch ($httpCode){
-         case 400:
-             header ('HTTP/1.0 400 Bad Request');
-             $result = array('error'=>$message);
-             break;
-         case 404:
-             header ('HTTP/1.0 404 Not Found');
-             $result = array('error'=> $message);
-             break;
-         case 401:
-             header('HTTP/1.0 401 Unauthorized');
-             $result = array('error' => $message);
-             break;
-     }
-    add_log($method, $result, $requestData, $httpCode, $pdo);
-     echo json_encode(array($result, JSON_UNESCAPED_UNICODE));
- }
-
- function add_log($method, $result, $requestData, $httpCode, $pdo){
+// функции работы с логами
+  function add_log($method, $result, $requestData, $httpCode, $pdo){
      $date = date('l jS \of F Y h:i:s A');
      $userAgent = $_SERVER['HTTP_USER_AGENT'];
      $uri = $_SERVER['REQUEST_URI'];
@@ -33,24 +15,56 @@
      $stmt->bindParam(':userAgent', $userAgent);
      $stmt->bindParam(':date', $date);
      $stmt->bindParam(':httpCode', $httpCode);
-     $stmt->execute();
- }
+      try {
+          $stmt -> execute();
+      } catch (PDOException $e) {
+          return array("message"=>$e);
+      }
+     return 1;
+  }
 
  function get_logs($pdo){
      $stmt = $pdo -> prepare('SELECT * FROM log WHERE 1');
-     $stmt -> execute();
+     try {
+         $stmt -> execute();
+     } catch (PDOException $e) {
+         return array("message"=>$e);
+     }
      return $stmt->fetchAll(PDO::FETCH_OBJ);
  }
 
+ function get_log_by_id($id, $pdo){
+      $stmt = $pdo -> prepare('SELECT * FROM log WHERE id=:id');
+      $stmt -> bindParam(":id", $id);
+      try {
+          $stmt -> execute();
+      } catch (PDOException $e) {
+          return array("message"=>$e);
+      }
+      return $stmt -> fetchAll(PDO::FETCH_OBJ);
+ }
+
  function logout($token, $pdo){
-     setcookie('token', '', time()-3600);
-     return 1;
+      $stmt = $pdo -> prepare('DELETE FROM auth WHERE token=:token');
+      $stmt -> bindParam('token', $token);
+      setcookie('token', '', time()-3600);
+
+      try {
+          $stmt -> execute();
+      } catch (PDOException $e) {
+          return array("message"=>$e);
+      }
+      return 1;
  }
  //Проверка пароля///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  function check_pass($login, $pdo){
      $stmt = $pdo->prepare("SELECT pass FROM user WHERE `email` = :login");
      $stmt -> bindParam(':login', $login);
-     $stmt -> execute();
+     try {
+         $stmt -> execute();
+     } catch (PDOException $e) {
+         return array("message"=>$e);
+     }
      return $stmt->fetchColumn();
  }
 //Создание токена////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,10 +74,14 @@
     $stmt -> bindValue(1, $login);
     $stmt -> bindValue(2, $token);
     $stmt -> bindValue(3, $login);
-    $stmt -> execute();
-
+     try {
+         $stmt -> execute();
+     } catch (PDOException $e) {
+         return array("message"=>$e);
+     }
 //    setcookie('role', $role, time()+60*60*20*30);
     setcookie('token', $token, time()+60*60*24*30);
+     return true;
  }
 //Проверка токена////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  function check_token($token, $pdo){
@@ -102,13 +120,22 @@
      $stmt->bindParam(':pass', $pass);
      $stmt->bindParam(':email', $userData['email']);
      $stmt->bindParam(':role', $userData['role']);
-     $stmt->execute();
+     try {
+         $stmt -> execute();
+     } catch (PDOException $e) {
+         return array("message"=>$e);
+     }
+     return true;
  }
 
  function get_user_by_id($id, $pdo){
      $stmt = $pdo->prepare("SELECT * FROM user WHERE id=:id");
      $stmt->bindParam(':id', $id);
-     $stmt->execute();
+     try {
+         $stmt -> execute();
+     } catch (PDOException $e) {
+         return array("message"=>$e);
+     }
      return $stmt->fetch(PDO::FETCH_LAZY);
  }
 
@@ -119,6 +146,9 @@
      $userValues = array("mName", "fName", "lName", "photo", "email", "pass", "role");
 
      $queryString = prepare_query_string_for_update($userValues, $userData);
+     if ($queryString=='error'){
+         return array('message'=>"unknown parameters");
+     }
      $queryString = "UPDATE user SET $queryString WHERE id=:id";
      $stmt = $pdo->prepare($queryString);
      foreach ($userData as $key=>$value){
@@ -127,7 +157,11 @@
          }
      }
      $stmt->bindParam(':id', $id);
-     $stmt->execute();
+     try {
+         $stmt -> execute();
+     } catch (PDOException $e) {
+         return array("message"=>$e);
+     }
      return 1;
  }
 
@@ -151,7 +185,12 @@ function prepare_query_string_for_update($columns, $formData){
  function delete_user($id, $pdo){
      $stmt = $pdo->prepare("DELETE FROM user WHERE id=:id");
      $stmt->bindParam(':id', $id);
-     $stmt->execute();
+     try {
+         $stmt -> execute();
+     } catch (PDOException $e) {
+         return array("message"=>$e);
+     }
+     return 1;
  }
 
  //CRUD для статей//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -167,40 +206,44 @@ function prepare_query_string_for_update($columns, $formData){
      $stmt->bindParam(':isDraft', $newsData['isDraft']);
      $stmt->bindParam(':rubricUri', $newsData['rubricUri']);
      $stmt->bindParam(':tags', $newsData['tags']);
-     $stmt->execute();
+     try {
+         $stmt -> execute();
+     } catch (PDOException $e) {
+         return array("message"=>$e);
+     }
+     return 1;
  }
 
  function get_news_by_id($id, $pdo){
      $stmt = $pdo -> prepare("SELECT * FROM news WHERE id=:id");
      $stmt -> bindParam(':id', $id);
-     $stmt -> execute();
+     try {
+         $stmt -> execute();
+     } catch (PDOException $e) {
+         return array("message"=>$e);
+     }
      return $stmt->fetch(PDO::FETCH_LAZY);
  }
 
  function prepare_news_query_string($queryString, $rubric, $tag, $pdo){
      if (!empty($rubric)) {
-         if ($rubric != ' ') {
+         if ($rubric != '') {
              $queryString = join('WHERE rubricUri=:rubricUri', $queryString);
              $stmt = $pdo->prepare($queryString);
              $stmt -> bindParam(':rubricUri', $rubric);
-             return $stmt;
-         } elseif ($tag!=' '){
+         } elseif ($tag!=''){
              $queryString = join('WHERE tags  LIKE :tag', $queryString);
              $stmt = $pdo->prepare($queryString);
              $stmt -> bindParam(':tag', $tag);
-
-             return $stmt;
          } else {
              $queryString = join('', $queryString);
              $stmt = $pdo -> prepare($queryString);
-
-             return $stmt;
          }
      }
+     return $stmt;
  }
 
  function get_news($n, $rubric, $tag, $pdo){
-     $queryString = array();
      $queryString[0] = "SELECT * FROM news ";
      if ($n == 1) {
          $queryString[1] = " LIMIT 20";
@@ -209,8 +252,12 @@ function prepare_query_string_for_update($columns, $formData){
          $n = ($n-1)*20;
          $queryString[1] = " LIMIT $n, 20";
          $stmt = prepare_news_query_string($queryString, $rubric, $tag, $pdo);
-     } else return 'wrong number';
-     $stmt -> execute();
+     } else return array("message"=>"Wrong number of page");
+     try {
+         $stmt -> execute();
+     } catch (PDOException $e) {
+         return array("message"=>$e);
+     }
      return $stmt -> fetchAll(PDO::FETCH_OBJ);
  }
 
@@ -228,14 +275,21 @@ function prepare_query_string_for_update($columns, $formData){
      }
      $stmt->bindParam(':id', $id);
      $stmt->bindParam(':updateDate', $updateDate);
-     $stmt->execute();
+     try {
+         $stmt -> execute();
+     } catch (PDOException $e) {
+         return array("message"=>$e);
+     }
      return 1;
 
  }
 
  function delete_news($id, $pdo){
      $stmt = $pdo->prepare("DELETE FROM news WHERE id=?");
-     $stmt -> execute($id);
-     return 1;
+     try {
+         $stmt -> execute($id);
+     } catch (PDOException $e) {
+         return array("message"=>$e);
+     }     return 1;
  }
  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

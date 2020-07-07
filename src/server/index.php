@@ -54,5 +54,6 @@ switch ($router){
         require_once 'news.php';
         break;
     default:
-        echo 'error';
+        $message = array("message"=>"unknown route");
+        sendResponse($method, $formData, "", 404, $message, $pdo);
 }
