@@ -164,7 +164,7 @@
      }
      return 1;
  }
-
+// Подготовка строки запроса для обновления данных
 function prepare_query_string_for_update($columns, $formData){
     $query = array();
     foreach ($formData as $key=>$value){
@@ -224,7 +224,7 @@ function prepare_query_string_for_update($columns, $formData){
      }
      return $stmt->fetch(PDO::FETCH_LAZY);
  }
-
+//Подготовка строки запроса для получения новостей
  function prepare_news_query_string($queryString, $rubric, $tag, $pdo){
      if (!empty($rubric)) {
          if ($rubric != '') {

@@ -5,25 +5,48 @@
             if ($method === "GET" && isset($formData['id'])) {
                 $news = get_news_by_id($formData['id'], $pdo);
                 $result = array();
-                foreach ($news as $key => $value) {
-                    $result[$key] = $value;
+                if (isset($news['message'])){
+                    sendResponse($method, $formData, '',404, $news['message'], $pdo);
+                } else {
+                    foreach ($news as $key => $value) {
+                        $result[$key] = $value;
+                    }
+                    unset ($result['queryString']);
+                    sendResponse($method, $formData, $result, 200, '', $pdo);
                 }
-                unset ($result['queryString']);
-                echo json_encode($result, JSON_UNESCAPED_UNICODE);
             } elseif ($method === "GET" && !isset($formData['id'])) {
                 $news = get_news($formData['listNumber'], $formData['rubricUri'], $formData['tags'], $pdo);
-                foreach ($news as $key => $value) {
-                    $result[$key] = $value;
+                $result = array();
+                if (isset($news['message'])){
+                    sendResponse($method, $formData, '',404, $news['message'], $pdo);
+                } else {
+                    foreach ($news as $key => $value) {
+                        $result[$key] = $value;
+                    }
+                    unset ($result['queryString']);
+                    sendResponse($method, $formData, $result, 200, '', $pdo);
                 }
-                echo json_encode($result, JSON_UNESCAPED_UNICODE);
             } elseif ($method === "POST") {
-                add_news($formData, $pdo);
+                $news = add_news($formData, $pdo);
+                if (isset($news['message'])){
+                    sendResponse($method, $formData, '',404, $news['message'], $pdo);
+                } else {
+                    sendResponse($method, $formData, $news,200, '', $pdo);
+                }
             } elseif ($method === "PUT") {
-                update_news($_GET['id'], $formData, $pdo);
-                echo " u'r update news with id " . $_GET['id'];
+                $news = update_news($_GET['id'], $formData, $pdo);
+                if (isset($news['message'])){
+                    sendResponse($method, $formData, '',404, $news['message'], $pdo);
+                } else {
+                    sendResponse($method, $formData, $news,200, '', $pdo);
+                }
             } elseif ($method === "DELETE") {
-                delete_news($_GET['id'], $pdo);
-                echo " u'r delete news with id " . $_GET['id'];
+                $news = delete_news($_GET['id'], $pdo);
+                if (isset($news['message'])){
+                    sendResponse($method, $formData, '',404, $news['message'], $pdo);
+                } else {
+                    sendResponse($method, $formData, $news,200, '', $pdo);
+                }
             } else sendResponse($method, $formData, '', 400, "Bad request", $pdo);
         } else {
             sendResponse($method, $formData, '', 400, "Wrong token", $pdo);

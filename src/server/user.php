@@ -3,20 +3,38 @@
      if (check_token($_COOKIE['token'], $pdo)) {
          if ($method === "GET" && isset($formData['id'])) {
              $user = get_user_by_id($formData['id'], $pdo);
+             if (isset($user['message'])){
+                 sendResponse($method, $formData, '',404, $user['message'], $pdo);
+             } else {
+                 sendResponse($method, $formData, $user,200, '', $pdo);
+             }
          }
 
          elseif ($method === "POST") {
-             add_user($formData, $pdo);
+             $user = add_user($formData, $pdo);
+             if (isset($user['message'])){
+                 sendResponse($method, $formData, '',404, $user['message'], $pdo);
+             } else {
+                 sendResponse($method, $formData, $user,200, '', $pdo);
+             }
          }
 
          elseif ($method === "PUT"){
-             update_user($_GET['id'], $formData, $pdo);
-             echo " u'r update user with id ".$_GET['id'];
+             $user = update_user($_GET['id'], $formData, $pdo);
+             if (isset($user['message'])){
+                 sendResponse($method, $formData, '',404, $user['message'], $pdo);
+             } else {
+                 sendResponse($method, $formData, $user,200, '', $pdo);
+             }
          }
 
          elseif ($method === "DELETE"){
-             delete_user($_GET['id'], $pdo);
-             echo " u'r delete user with id ".$_GET['id'];
+            $user = delete_user($_GET['id'], $pdo);
+             if (isset($user['message'])){
+                 sendResponse($method, $formData, '',404, $user['message'], $pdo);
+             } else {
+                 sendResponse($method, $formData, $user,200, '', $pdo);
+             }
          } else sendResponse($method, $formData, '', 400, "Bad request", $pdo);
      } else {
          sendResponse($method, $formData, '', 400, "Wrong token", $pdo);
